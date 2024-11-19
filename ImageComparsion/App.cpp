@@ -54,20 +54,18 @@ App& App::getAppInstance() {
 	return *app;
 }
 
-bool App::checkPath(std::string const &p) {
+bool App::checkPath(std::string const& p) {
 	return std::filesystem::exists(p);
 }
 
 // get User Data
-std::vector<std::string> App::getPathList() {
-	return UserData.paths;
-}
-std::vector<std::string> App::getCombinationList() {
-	return UserData.combinations;
-}
-std::vector<std::pair<std::string, std::string>> App::getPathTemplates() {
-	return UserData.pathTemplates;
-}
-std::vector<std::pair<std::string, std::string>> App::getNamings() {
-	return UserData.naming;
-}
+std::vector<std::string> App::getPathList() { return UserData.paths; }
+std::vector<std::string> App::getCombinationList() { return UserData.combinations; }
+std::vector<std::pair<std::string, std::string>> App::getPathTemplates() { return UserData.pathTemplates; }
+std::vector<std::pair<std::string, std::string>> App::getNamings() { return UserData.naming; }
+
+// update User Data
+void App::setPathList(std::vector<std::string>& data) { UserData.paths = data; }
+void App::setCombinationList(std::vector<std::string>& data) { UserData.combinations = data; }
+void App::setPathTemplates(std::vector <std::pair<std::string, std::string>>& data) { UserData.pathTemplates = data; }
+void App::setNamings(std::vector <std::pair<std::string, std::string>>& data) { UserData.naming = data; }
