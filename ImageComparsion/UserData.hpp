@@ -7,8 +7,6 @@
 #include <utility>
 #include <sstream>
 
-#include <iostream>
-
 struct {
 	std::vector<std::string> paths, pathTemplates, combinations;
 

@@ -6,8 +6,6 @@
 #include <sstream>
 #include <vector>
 
-#include <iostream>
-
 App* App::app = nullptr;
 
 App::App() {
@@ -29,12 +27,6 @@ App::App() {
 		return;
 
 	UserData.parseUserData(lines);
-
-	//std::cout << "out compose start" << std::endl;
-	std::string sss = UserData.composeUserData();
-	std::cout << sss.length() << std::endl;
-	std::cout << sss << std::endl;
-	//std::cout << "out compose end" << std::endl;
 }
 
 App& App::getAppInstance() {
