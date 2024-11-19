@@ -16,6 +16,8 @@ public:
 
 	static App& getAppInstance();
 
+	//void getImageList(std::string);
+
 
 	// load user data
 	// scan refs by main path

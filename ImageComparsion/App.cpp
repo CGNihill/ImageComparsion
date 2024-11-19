@@ -1,4 +1,5 @@
 #include "App.h"
+#include "ErrLog.hpp"
 
 #include <stdexcept>
 #include <fstream>
@@ -13,7 +14,7 @@ App::App() {
 	// load user data;
 	std::ifstream f("locale.txt");
 	if (!f.is_open())
-		throw std::runtime_error("locase user data load error");
+		LOG(true, "local user data load error");
 
 	std::stringstream s;
 	s << f.rdbuf();
@@ -29,7 +30,11 @@ App::App() {
 
 	UserData.parseUserData(lines);
 
-	std::cout << UserData.composeUserData() << std::endl;
+	//std::cout << "out compose start" << std::endl;
+	std::string sss = UserData.composeUserData();
+	std::cout << sss.length() << std::endl;
+	std::cout << sss << std::endl;
+	//std::cout << "out compose end" << std::endl;
 }
 
 App& App::getAppInstance() {

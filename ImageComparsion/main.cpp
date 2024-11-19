@@ -7,19 +7,6 @@
 
 using namespace std;
 
-void writef(string text) {
-	ofstream f("local2.txt");
-	f.write(text.c_str(), text.length());
-	f.close();
-}
-
-string readf() {
-	ifstream f("local2.txt");
-	stringstream s;
-	s << f.rdbuf();
-	return s.str();
-}
-
 int main() {
 	//cout << readf()/* << endl;
 	//string s = readf();

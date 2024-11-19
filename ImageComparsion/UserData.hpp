@@ -1,63 +1,74 @@
 #pragma once
-#include <iostream>
+
+#include "ErrLog.hpp"
+
 #include <string>
 #include <vector>
 #include <utility>
 #include <sstream>
 
+#include <iostream>
+
 struct {
-	std::vector<std::string> paths;
-	std::vector<std::string> combinations;
+	std::vector<std::string> paths, pathTemplates, combinations;
+
 	std::vector<std::pair<std::string, std::string>> naming; // fileNamePatern | output naming
 
-	/*
-	* line count
-	*/
 	void parseUserData(std::vector<std::string> lines) {
-		int pl = std::stoi(lines[0]);
-		int cl = std::stoi(lines[pl+1]);
-		int nl = std::stoi(lines[pl+cl+2]);
-
-		int i = 1;
+        size_t pl = (size_t)std::stoull(lines[0]);
+        size_t cl = (size_t)std::stoull(lines[pl + 1]);
+        size_t nl = (size_t)std::stoull(lines[pl + cl + 2]);
+        size_t ptl = (size_t)std::stoull(lines[pl + cl + nl + 3]);
 		
-		for(; i < pl; i++)
-			paths.push_back(lines[i]);
+		for(size_t i = 0; i < pl; i++)
+			paths.push_back(lines[i+1]);
 		
-		for (i++; i < cl+pl+1; i++)
-			combinations.push_back(lines[i]);
+		for (size_t i = 0; i < cl; i++)
+			combinations.push_back(lines[i + pl + 2]);
 
-		for (i+=2; i < nl + cl + pl + 2; i++) {
-			std::cout << lines[i] << std::endl;
-			int p = lines[i].find('|');
-			if (p == std::string::npos)
-				throw std::runtime_error("local data file sintaxis error");
+		for (size_t i = 0; i < nl; i++) {
+            std::string cs = lines[i + cl + pl + 3];
 
+			size_t p = cs.find('|');
+            if (p == std::string::npos) {
+				LOG(false, "local data file sintaxis error (NAMING)");
+                continue;
+            }
 
-			naming.push_back(std::make_pair(lines[i].substr(0, p), lines[i].substr(p)));
+			naming.push_back(std::make_pair(cs.substr(0, p), cs.substr(1+p)));
 		}
-		
-	}
+	
+        for (size_t i = 0; i < ptl; i++)
+            pathTemplates.push_back(lines[i + cl + pl + nl + 4]);
+    }
 
-	std::string composeUserData(){
-		std::string s = "";
-		s += paths.size() + '\n';
-		for (auto &l : paths) {
-			s += l + '\n';
-		}
+    std::string composeUserData() {
+        std::string s = "";
 
-		s += combinations.size() + '\n';
-		for (auto& l : combinations) {
-			s += l+'\n';
-		
-		}
+        s += std::to_string(paths.size()) + "\n";
 
-		s += naming.size() + '\n';
-		for (auto& l : naming) {
-			s += l.first + '|' + l.second + '\n';
-		}
+        for (auto& l : paths)
+            s += l + '\n';
 
-		return s;
-	}
+        s += std::to_string(combinations.size()) + "\n";
+
+        for (auto& l : combinations)
+            s += l + '\n';
+
+        s += std::to_string(naming.size()) + "\n";
+        
+        for (auto& l : naming)
+            s += l.first + '|' + l.second + '\n';
+
+        s += std::to_string(pathTemplates.size()) + "\n";
+
+        for (auto& l : pathTemplates)
+            s += l + '\n';
+
+
+        return s;
+    }
+
 
 
 } UserData;
