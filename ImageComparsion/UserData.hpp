@@ -8,9 +8,11 @@
 #include <sstream>
 
 struct {
-	std::vector<std::string> paths, pathTemplates, combinations;
+    std::string defaultValForEmpty{ "0\n0\n0\n0" };
 
-	std::vector<std::pair<std::string, std::string>> naming; // fileNamePatern | output naming
+	std::vector<std::string> paths, combinations;
+
+    std::vector<std::pair<std::string, std::string>> naming, pathTemplates; // (File Name Patern | Output Naming) , (template Name | Path)
 
 	void parseUserData(std::vector<std::string> lines) {
         size_t pl = (size_t)std::stoull(lines[0]);
@@ -36,8 +38,17 @@ struct {
 			naming.push_back(std::make_pair(cs.substr(0, p), cs.substr(1+p)));
 		}
 	
-        for (size_t i = 0; i < ptl; i++)
-            pathTemplates.push_back(lines[i + cl + pl + nl + 4]);
+        for (size_t i = 0; i < ptl; i++) {
+            std::string cs = lines[i + cl + pl + nl + 4];
+
+            size_t p = cs.find('|');
+            if (p == std::string::npos) {
+                LOG(false, "local data file sintaxis error (PATH_TEMPLATES)");
+                continue;
+            }
+
+            pathTemplates.push_back(std::make_pair(cs.substr(0, p), cs.substr(1 + p)));
+        }
     }
 
     std::string composeUserData() {
@@ -61,12 +72,10 @@ struct {
         s += std::to_string(pathTemplates.size()) + "\n";
 
         for (auto& l : pathTemplates)
-            s += l + '\n';
+            s += l.first + '|' + l.second + '\n';
 
 
         return s;
     }
-
-
 
 } UserData;
