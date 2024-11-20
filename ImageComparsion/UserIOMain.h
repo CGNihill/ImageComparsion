@@ -8,15 +8,18 @@ class UserIOMain
 {
 private:
 	App &app = App::getAppInstance();
+	void checkTemplate(std::vector<std::pair<std::string, std::string>>&, std::pair<std::string, std::string>&);
+	std::pair<std::string, std::string> createNewTemplate();
+	std::pair<std::string, std::string> createNewCollageTemplate();
+
 public:
-	UserIOMain() = delete;
+	UserIOMain() = default;
+
 	UserIOMain(UserIOMain&&) = delete;
 	UserIOMain(UserIOMain const &) = delete;
 
 	void mainProcess();
-	std::pair<std::string, std::string> createNewTemplate();
-	void checkPathTemplate(std::vector<std::pair<std::string, std::string>>&, std::pair<std::string, std::string>&);
-
+	void settings();
 	// main process
 	// settings
 	// additional functions

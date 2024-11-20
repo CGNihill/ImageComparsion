@@ -11,6 +11,8 @@ private:
 	static App* app;
 	App();
 
+	void updateUserData();
+
 public:
 	App(App&&) = delete;
 	App(const App&) = delete;
@@ -31,7 +33,7 @@ public:
 	void setPathTemplates(std::vector <std::pair<std::string, std::string>>&);
 	void setNamings(std::vector <std::pair<std::string, std::string>>&);
 
-	//void startCollageCreation(std::string, std::string, std::string);
+	void startCollageCreation(std::string, std::string, std::vector<std::string>);
 
 
 	//void getImageList(std::string);

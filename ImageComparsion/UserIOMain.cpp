@@ -17,7 +17,7 @@ void UserIOMain::mainProcess() {
 
 	cout << "- Set new file path or use recent" << endl;
 
-	vector<string> mainPaths = app.getPathList();
+	vector<string> mainPaths = this->app.getPathList();
 	for (size_t i = 0; i < mainPaths.size(); i++) {
 		cout << i + 1 << ")\t" << mainPaths[i] << endl;
 	}
@@ -33,7 +33,7 @@ void UserIOMain::mainProcess() {
 			passed = false;
 			cout << "- There is no such answer\n- Try again" << endl;
 		}
-		else if (!app.checkPath(path)) {
+		else if (!this->app.checkPath(path)) {
 			passed = false;
 			cout << "- The path does not exist\n- Try again" << endl;
 		}
@@ -52,14 +52,14 @@ void UserIOMain::mainProcess() {
 	}
 	if (b) {
 		mainPaths.push_back(path);
-		app.setPathList(mainPaths);
+		this->app.setPathList(mainPaths);
 	}
 
 	// set path template
 	cout << "- Set path template :" << endl;
 	cout << "- 1) NO\n- 2) Create new Template\n- 3) Delete Template" << endl;
 
-	vector<pair<string, string>> pathT = app.getPathTemplates();
+	vector<pair<string, string>> pathT = this->app.getPathTemplates();
 	for (size_t i = 0; i < pathT.size(); i++) {
 		cout << "- " << i + 4 << ")\t" << pathT[i].first << " | " << pathT[i].second << endl;
 	}
@@ -90,7 +90,7 @@ void UserIOMain::mainProcess() {
 					passed = false;
 					continue;
 				}
-				checkPathTemplate(pathT, newT);
+				checkTemplate(pathT, newT);
 				Ptemplate = newT.second;
 			}
 			catch (const std::exception& e)
@@ -113,12 +113,51 @@ void UserIOMain::mainProcess() {
 		}
 
 	} while (!passed);
-	app.setPathTemplates(pathT);
+	this->app.setPathTemplates(pathT);
 
 	cout << "- Set Collage Template" << endl;
-	vector<pair<string, string>> combinations = app.getCombinationList();
-	cout << "-1) Create new" << endl;
-		// get all images from path
+	vector<pair<string, string>> combinations = this->app.getCombinationList();
+	cout << "- 0) Use all combinations\n- 1) Create new" << endl;
+	for (size_t i = 0; i < combinations.size(); i++) {
+		cout << "- " << i + 2 << ") " << combinations[i].first << " | " << combinations[i].second << endl;
+	}
+
+	vector<string> collageTemplate;
+	do {
+		size_t c;
+		cin >> c;
+
+		if (!(c < combinations.size() + 1)) {
+			passed = false;
+			cout << "- There is no such answer\n- Try again" << endl;
+		}
+		else
+			passed = true;
+		if(c == 0){
+			for (auto& t : combinations) {
+				collageTemplate.push_back(t.second);
+			}
+		}
+		else if (c == 1) {
+			pair<string, string> nct = this->createNewCollageTemplate();
+			this->checkTemplate(combinations, nct);
+			this->app.setCombinationList(combinations);
+			collageTemplate.push_back(nct.second);
+		}
+		else {
+			collageTemplate.push_back(combinations[c - 1].second);
+		}
+
+		if (passed && c > 0) {
+			cout << "- Add one more template? [y/n]" << endl;
+			char ch;
+			cin >> ch;
+			if (tolower(ch) == 'y')
+				passed = 0;
+		}
+	} while (!passed);
+
+
 }
 
 pair<string, string> UserIOMain::createNewTemplate() {
@@ -158,8 +197,29 @@ pair<string, string> UserIOMain::createNewTemplate() {
 
 	return make_pair(pathTemplateName, pathTemplate);
 }
+pair<string, string> UserIOMain::createNewCollageTemplate() {
+	pair<string, string> out;
 
-void UserIOMain::checkPathTemplate(vector<pair<string, string>>& PTemp, pair<string, string>& newT) {
+	cout << "- Set collage template name" << endl;
+	cin >> out.first;
+
+	cout << "- Now you need to set the combination of the images by the naming index\n"
+		<< "- For example\n- Names -> 1) @S_Lumen_Day | 2) @S_Lumen_Night | 3) @S_PT_Day | 4) @S_PT_Night ..."
+		<< "\n- Template -> 1.3 | 2.4 | 1.2 | 2.3 | ..." << endl;
+
+	cout << "- Current naming list (for changing the naming list or other UserData go to settings)" << endl;
+	for (size_t i = 0; i < this->app.getNamings().size(); i++) {
+		cout << "- " << i << ") " << this->app.getNamings()[i].first << " | " << this->app.getNamings()[i].second << endl;
+	}
+
+	cout << "- Set the combination" << endl;
+
+	cin >> out.second;
+
+	return out;
+}
+
+void UserIOMain::checkTemplate(vector<pair<string, string>>& PTemp, pair<string, string>& newT) {
 	for (auto& t : PTemp) {
 		string tn = t.first, ntn = newT.first;
 		if (t.second == newT.second && transform(tn.begin(), tn.end(), tn.begin(), [](unsigned char c) { return tolower(c); }) != transform(ntn.begin(), ntn.end(), ntn.begin(), [](unsigned char c) { return tolower(c); })) {
@@ -176,3 +236,5 @@ void UserIOMain::checkPathTemplate(vector<pair<string, string>>& PTemp, pair<str
 		}
 	}
 }
+
+void UserIOMain::settings() {}

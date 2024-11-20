@@ -47,6 +47,19 @@ App::App() {
 	UserData.paths = fc::checkMainPaths(UserData.paths);
 }
 
+void App::updateUserData() {
+	std::string uds = UserData.composeUserData();
+	std::ofstream f("locale.txt");
+	if (!f.is_open()) {
+		LOG(false, "local user data file opening error\n\t[programm will continue working without saving data]");
+		return;
+	}
+
+	f.write(uds.c_str(), uds.length());
+
+	f.close();
+}
+
 App& App::getAppInstance() {
 	if (!(app)) {
 		app = new App();
@@ -70,4 +83,8 @@ void App::setCombinationList(std::vector <std::pair<std::string, std::string>>& 
 void App::setPathTemplates(std::vector <std::pair<std::string, std::string>>& data) { UserData.pathTemplates = data; }
 void App::setNamings(std::vector <std::pair<std::string, std::string>>& data) { UserData.naming = data; }
 
-//void App::startCollageCreation(std::string mainPath, std::string pathTemplate){}
+void App::startCollageCreation(std::string, std::string, std::vector<std::string>) {
+	updateUserData();
+
+}
+

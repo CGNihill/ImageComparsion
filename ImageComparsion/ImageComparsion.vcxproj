@@ -71,14 +71,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;C:\Users\snipe\CppLibs\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\snipe\CppLibs\opencv\build\include;C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
+    <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;C:\Users\snipe\CppLibs\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\snipe\CppLibs\opencv\build\include;C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -144,13 +144,13 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="ErrLog.hpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PTemplateEdit.cpp" />
+    <ClCompile Include="PathTemplateEdit.cpp" />
     <ClCompile Include="UserIOMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="FileChecker.hpp" />
-    <ClInclude Include="PTemplateEdit.h" />
+    <ClInclude Include="PathTemplateEdit.h" />
     <ClInclude Include="UserData.hpp" />
     <ClInclude Include="UserIOMain.h" />
   </ItemGroup>
