@@ -10,9 +10,9 @@
 struct {
     std::string defaultValForEmpty{ "0\n0\n0\n0" };
 
-	std::vector<std::string> paths, combinations;
+	std::vector<std::string> paths;
 
-    std::vector<std::pair<std::string, std::string>> naming, pathTemplates; // (File Name Patern | Output Naming) , (template Name | Path)
+    std::vector<std::pair<std::string, std::string>> naming, pathTemplates, combinations; // (File Name Patern | Output Naming) , (template Name | Path), (combination name | combination)
 
 	void parseUserData(std::vector<std::string> lines) {
         size_t pl = (size_t)std::stoull(lines[0]);
@@ -23,8 +23,17 @@ struct {
 		for(size_t i = 0; i < pl; i++)
 			paths.push_back(lines[i+1]);
 		
-		for (size_t i = 0; i < cl; i++)
-			combinations.push_back(lines[i + pl + 2]);
+        for (size_t i = 0; i < cl; i++) {
+            std::string cs = lines[i + pl + 2];
+
+            size_t p = cs.find('|');
+            if (p == std::string::npos) {
+                LOG(false, "local data file sintaxis error (COMBINATION)");
+                continue;
+            }
+
+            combinations.push_back(std::make_pair(cs.substr(0, p), cs.substr(1 + p)));
+        }
 
 		for (size_t i = 0; i < nl; i++) {
             std::string cs = lines[i + cl + pl + 3];
@@ -62,7 +71,7 @@ struct {
         s += std::to_string(combinations.size()) + "\n";
 
         for (auto& l : combinations)
-            s += l + '\n';
+            s += l.first + '|' + l.second + '\n';
 
         s += std::to_string(naming.size()) + "\n";
         

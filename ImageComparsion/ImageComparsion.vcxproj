@@ -71,12 +71,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExternalIncludePath>C:\Users\snipe\CppLibs\opencv\build\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ExternalIncludePath>C:\Users\snipe\CppLibs\opencv\build\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
     <IncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
@@ -144,11 +144,15 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="ErrLog.hpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PTemplateEdit.cpp" />
+    <ClCompile Include="UserIOMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="FileChecker.hpp" />
+    <ClInclude Include="PTemplateEdit.h" />
     <ClInclude Include="UserData.hpp" />
+    <ClInclude Include="UserIOMain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

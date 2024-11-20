@@ -21,15 +21,17 @@ public:
 
 	// get User Data
 	std::vector<std::string> getPathList();
-	std::vector<std::string> getCombinationList();
+	std::vector<std::pair<std::string, std::string>> getCombinationList();
 	std::vector<std::pair<std::string, std::string>> getPathTemplates();
 	std::vector<std::pair<std::string, std::string>> getNamings();
 
 	// update User Data
 	void setPathList(std::vector<std::string>&);
-	void setCombinationList(std::vector<std::string>&);
+	void setCombinationList(std::vector <std::pair<std::string, std::string>>&);
 	void setPathTemplates(std::vector <std::pair<std::string, std::string>>&);
 	void setNamings(std::vector <std::pair<std::string, std::string>>&);
+
+	//void startCollageCreation(std::string, std::string, std::string);
 
 
 	//void getImageList(std::string);

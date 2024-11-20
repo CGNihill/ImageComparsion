@@ -1,12 +1,11 @@
+#include "UserIOMain.h"
+#include "App.h"
+
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <cctype>
-#include <algorithm>
+#include <vector>
 #include <utility>
-
-#include "App.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -14,17 +13,13 @@ static bool isN(const string& s) {
 	return std::all_of(s.begin(), s.end(), ::isdigit);
 }
 
-pair<string, string> createNewTemplate();
-void checkPathTemplate(vector<pair<string, string>>&, pair<string, string>&);
-
-int main() {
-	App& app = App::getAppInstance();
+void UserIOMain::mainProcess() {
 
 	cout << "- Set new file path or use recent" << endl;
 
 	vector<string> mainPaths = app.getPathList();
 	for (size_t i = 0; i < mainPaths.size(); i++) {
-		cout << i+1 << ")\t" << mainPaths[i] << endl;
+		cout << i + 1 << ")\t" << mainPaths[i] << endl;
 	}
 
 	// select my Path
@@ -123,10 +118,10 @@ int main() {
 	cout << "- Set Collage Template" << endl;
 	vector<pair<string, string>> combinations = app.getCombinationList();
 	cout << "-1) Create new" << endl;
-	// get all images from path
+		// get all images from path
 }
 
-pair<string, string> createNewTemplate() {
+pair<string, string> UserIOMain::createNewTemplate() {
 	cout << "- For creating a new template u need to set the local path starting from main path, for example:\n"
 		<< "- --- main path: C:\\\\User\\Local Name\\project --- local path \\ saves\\screenshot\\@S\\...\n"
 		<< "- Where @S is non constant value" << endl;
@@ -164,7 +159,7 @@ pair<string, string> createNewTemplate() {
 	return make_pair(pathTemplateName, pathTemplate);
 }
 
-void checkPathTemplate(vector<pair<string, string>>& PTemp, pair<string, string>& newT) {
+void UserIOMain::checkPathTemplate(vector<pair<string, string>>& PTemp, pair<string, string>& newT) {
 	for (auto& t : PTemp) {
 		string tn = t.first, ntn = newT.first;
 		if (t.second == newT.second && transform(tn.begin(), tn.end(), tn.begin(), [](unsigned char c) { return tolower(c); }) != transform(ntn.begin(), ntn.end(), ntn.begin(), [](unsigned char c) { return tolower(c); })) {
