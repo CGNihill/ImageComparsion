@@ -361,5 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/ImageComparsion/ImageComparsion.vcxproj
-/ImageComparsion/ImageComparsion.vcxproj.filters
