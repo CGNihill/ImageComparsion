@@ -3,6 +3,7 @@
 #include "ErrLog.hpp"
 
 #include <string>
+#include <stdexcept>
 #include <vector>
 #include <utility>
 #include <sstream>
@@ -87,9 +88,18 @@ struct {
         return s;
     }
 
-    std::vector<std::string> getNamingsByTemplate(std::string comb) {
-        std::vector<std::string> temp;
-        while ()
+    std::vector<std::pair<std::string, std::string>> getNamingsByTemplate(std::string comb) {
+        std::vector<std::pair<std::string, std::string>> temp;
+        size_t i;
+        while ((i = comb.find('.')) != std::string::npos) {
+            int l = stoi(comb.substr(0, i));
+            if (l > naming.size() - 1) {
+                LOG(true, "naming by template index does't exist");
+            }
+
+            temp.push_back(naming[l]);
+        }
+        return temp;
     }
 
 } UserData;
