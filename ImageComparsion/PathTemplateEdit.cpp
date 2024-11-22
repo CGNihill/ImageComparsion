@@ -8,7 +8,7 @@
 
 namespace fs = std::filesystem;
 
-std::vector<std::vector<std::pair<std::string, std::string>>> PathTemplateEdit::cNam = std::vector<std::vector<std::pair<std::string, std::string>>>{};
+std::vector<std::vector<std::pair<std::string, std::string>>> PathTemplateEdit::cName = std::vector<std::vector<std::pair<std::string, std::string>>>{};
 
 std::vector<std::string> PathTemplateEdit::cleanName(std::string n)
 {
@@ -29,14 +29,32 @@ std::vector<std::string> PathTemplateEdit::cleanName(std::string n)
 	return temp;
 }
 
-std::vector<std::vector<fs::path>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates)
+std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates)
 {
 	for (std::string const& ct : combinationTemplates) {
-		cNam.push_back(UserData.getNamingsByTemplate(ct));
+		cName.push_back(UserData.getNamingsByTemplate(ct));
 	}
 
 	std::vector<std::filesystem::path> allImgL = FileChecker::getAllImages(mainPath, pathTemplate);
 
+	std::vector<std::vector<std::vector<fs::path>>> temp;
+
+	for (size_t i = 0; i < cName.size(); i++) {
+		for (fs::path const& f : allImgL) {
+			std::vector<size_t> l;
+			for (auto const& v : cName[i]) {
+				l.push_back(v.first.find(f.filename().string()));
+			}
+			size_t k = 0;
+			for (auto const& v : l) {
+				if (k > v && v == std::string::npos)
+					break;
+				temp.
+			}
+		}
+	}
+
+	/*
 	std::vector<std::map<std::string, char>> nameMap;
 	nameMap.reserve(combinationTemplates.size());
 
@@ -68,6 +86,10 @@ std::vector<std::vector<fs::path>> PathTemplateEdit::getSortedImageList(std::str
 				}
 			}
 		}
+	}*/
+
+	for (auto const& arr : temp) {
+		std::sort(arr.begin(), arr.end());
 	}
 
 	return temp;

@@ -9,7 +9,7 @@ namespace fs = std::filesystem;
 class PathTemplateEdit
 {
 private:
-	static std::vector<std::vector<std::pair<std::string, std::string>>> cNam;
+	static std::vector<std::vector<std::pair<std::string, std::string>>> cName;
 	static std::vector<std::string> cleanName(std::string);
 
 	PathTemplateEdit() = delete;
@@ -17,5 +17,5 @@ private:
 	PathTemplateEdit(PathTemplateEdit const &) = delete;
 
 public:
-	static std::vector<std::vector<fs::path>> getSortedImageList(std::string, std::string, std::vector<std::string>);
+	static std::vector < std::vector<std::vector<fs::path>>> getSortedImageList(std::string, std::string, std::vector<std::string>);
 };
