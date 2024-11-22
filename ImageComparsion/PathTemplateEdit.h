@@ -17,5 +17,5 @@ private:
 	PathTemplateEdit(PathTemplateEdit const &) = delete;
 
 public:
-	static std::vector<std::vector<std::string>> getSortedImageList(std::string, std::string, std::vector<std::string>);
+	static std::vector<std::vector<fs::path>> getSortedImageList(std::string, std::string, std::vector<std::string>);
 };

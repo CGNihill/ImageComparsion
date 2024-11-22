@@ -29,7 +29,7 @@ std::vector<std::string> PathTemplateEdit::cleanName(std::string n)
 	return temp;
 }
 
-std::vector<std::vector<std::string>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates)
+std::vector<std::vector<fs::path>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates)
 {
 	for (std::string const& ct : combinationTemplates) {
 		cNam.push_back(UserData.getNamingsByTemplate(ct));
@@ -57,7 +57,7 @@ std::vector<std::vector<std::string>> PathTemplateEdit::getSortedImageList(std::
 
 	}
 
-	std::vector<std::vector<std::string>> temp;
+	std::vector<std::vector<fs::path>> temp;
 
 	for (size_t i = 0; i < usedNames.size(); i++) {
 		for (auto const& n : allImgL) {
@@ -70,5 +70,5 @@ std::vector<std::vector<std::string>> PathTemplateEdit::getSortedImageList(std::
 		}
 	}
 
-	return temp;
+	return std::vector<std::vector<fs::path>>();
 }
