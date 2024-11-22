@@ -37,60 +37,57 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 
 	std::vector<std::filesystem::path> allImgL = FileChecker::getAllImages(mainPath, pathTemplate);
 
-	std::vector<std::vector<std::vector<fs::path>>> temp;
-
-	for (size_t i = 0; i < cName.size(); i++) {
-		for (fs::path const& f : allImgL) {
-			std::vector<size_t> l;
-			for (auto const& v : cName[i]) {
-				l.push_back(v.first.find(f.filename().string()));
-			}
-			size_t k = 0;
-			for (auto const& v : l) {
-				if (k > v && v == std::string::npos)
-					break;
-				temp.
-			}
-		}
-	}
-
-	/*
-	std::vector<std::map<std::string, char>> nameMap;
-	nameMap.reserve(combinationTemplates.size());
-
-	for (size_t i = 0; i < nameMap.size(); i++) {
-		for (auto const& v : cNam[i]) {
-			for (auto const& vv : cleanName(v.first))
-				nameMap[i][vv] = 0;
-		}
-
-	}
-
-	std::vector<std::vector<std::string>> usedNames;
-	usedNames.reserve(nameMap.size());
-
-	for (size_t i = 0; i < usedNames.size(); i++) {
-		for (auto const& [k, v] : nameMap[i])
-			usedNames[i].push_back(k);
-
-	}
-
 	std::vector<std::vector<fs::path>> temp;
 
-	for (size_t i = 0; i < usedNames.size(); i++) {
-		for (auto const& n : allImgL) {
-			for (auto const& nn : usedNames[i]) {
-				if (n.filename().string().find(nn) != std::string::npos) {
-					temp[i].push_back(n);
+	std::vector<std::vector<std::vector<std::string>>> cleanedNamings;
+	cleanedNamings.reserve(cName.size());
+
+	for (size_t i = 0; i < cName.size(); i++) {
+		for (auto const& v : cName[i]) {
+			cleanedNamings[i].push_back(cleanName(v.first));
+		}
+	}
+
+	for (size_t i = 0; i < cleanedNamings.size(); i++) {
+		for (auto const& v : allImgL) {
+			bool b = false;
+			for (auto const& c : cleanedNamings[i]) {
+				size_t f = 0, j;
+				for (j = 0; j < c.size(); j++) {
+					if (v.filename().string().find(c[j]) == std::string::npos || v.filename().string().find(c[j]) < f)
+						break;
+					f = v.filename().string().find(c[j]);
+				}
+				if (!(j < c.size())) {
+					b = true;
 					break;
 				}
 			}
+			if (b) {
+				temp[i].push_back(allImgL[i]);
+			}
 		}
-	}*/
-
-	for (auto const& arr : temp) {
-		std::sort(arr.begin(), arr.end());
 	}
 
-	return temp;
+	std::vector<std::vector<std::vector<fs::path>>> fin;
+	fin.reserve(temp.size());
+
+	std::map<std::string, std::vector<fs::path>> mapP;
+
+	for (size_t i = 0; i < temp.size(); i++) {
+		for (auto const& v : temp[i]) {
+			mapP[v.filename().string().substr(0, v.filename().string().find('(') - 1)] = v;
+		}
+		size_t j = 0;
+
+		for (auto const& [k,v] : mapP) {
+			
+			for (auto const& b : v) {
+				fin[i][j].push_back(b);
+			}
+			j++;
+		}
+	}
+
+	return fin;
 }
