@@ -40,18 +40,60 @@ inline std::vector<std::string> FileChecker::parsePathTemplate(std::string pl)
 
 inline std::vector<fs::path> FileChecker::getImgsRecursive(fs::path p)
 {
-	fs::recursive_directory_iterator rdi(p);
 	std::vector<fs::path> imgs;
-	
 
+	try
+	{
+		for (const fs::directory_entry& d : fs::recursive_directory_iterator(p)) {
 
+			try
+			{
+				if (fs::is_symlink(d.path())) {
+					continue;
+				}
 
-	return std::vector<fs::path>();
+				if (fs::is_regular_file(d.path()) && d.path().extension().string() == ".png") {
+					imgs.push_back(d.path());
+				}
+			}
+			catch (const fs::filesystem_error& fe)
+			{
+				std::cerr << "Error accessing file " << d.path() << ": " << fe.what() << std::endl;
+			}
+
+		}
+	}
+	catch (const fs::filesystem_error& fe)
+	{
+		std::cerr << "Error accessing directory " << p << ": " << fe.what() << std::endl;
+	}
+
+	return imgs;
 }
 
-inline std::vector<fs::path> FileChecker::getImgs(fs::path, std::vector<std::string>)
+inline std::vector<fs::path> FileChecker::getImgs(fs::path mainP, std::vector<std::string>subP)
 {
-	return std::vector<fs::path>();
+	std::vector<fs::path> imgs{}, allPaths;
+
+	for (size_t i = 0; i < subP.size(); i++) {
+		if (subP[i] == "@S") {
+			for (auto const& d : fs::directory_iterator(mainP)) {
+				if (d.exists() && fs::is_directory(d)) {
+					std::vector<fs::path> tmp = getImgs(d, { subP.begin() + i + 1, subP.end() });
+					imgs.insert(imgs.end(), tmp.begin(), tmp.end());
+				}
+			}
+			return imgs;
+		}
+
+		mainP += subP[i];
+	}
+
+	for (auto const& d : fs::directory_iterator(mainP))
+		if (fs::is_regular_file(d) && d.path().extension().string() == ".png")
+			imgs.push_back(d);
+
+	return imgs;
 }
 
 inline std::vector<std::string> FileChecker::checkMainPaths(std::vector<std::string> pl) {
@@ -68,7 +110,11 @@ inline std::vector<std::string> FileChecker::checkMainPaths(std::vector<std::str
 
 inline std::vector<fs::path> FileChecker::getAllImages(fs::path mp, std::string pt) {
 	std::vector<std::string> temp = parsePathTemplate(pt);
-	return std::vector<fs::path>();
+
+	if (pt != "")
+		return getImgsRecursive(mp);
+
+	return getImgs(mp, temp);
 }
 
 

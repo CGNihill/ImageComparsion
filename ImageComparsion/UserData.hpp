@@ -87,4 +87,9 @@ struct {
         return s;
     }
 
+    std::vector<std::string> getNamingsByTemplate(std::string comb) {
+        std::vector<std::string> temp;
+        while ()
+    }
+
 } UserData;
