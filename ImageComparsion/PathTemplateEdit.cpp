@@ -63,12 +63,12 @@ std::vector<std::vector<fs::path>> PathTemplateEdit::getSortedImageList(std::str
 		for (auto const& n : allImgL) {
 			for (auto const& nn : usedNames[i]) {
 				if (n.filename().string().find(nn) != std::string::npos) {
-					temp[i].push_back(n.string());
+					temp[i].push_back(n);
 					break;
 				}
 			}
 		}
 	}
 
-	return std::vector<std::vector<fs::path>>();
+	return temp;
 }
