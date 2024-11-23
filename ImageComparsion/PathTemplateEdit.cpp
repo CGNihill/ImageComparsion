@@ -29,6 +29,7 @@ std::vector<std::string> PathTemplateEdit::cleanName(std::string n)
 	return temp;
 }
 
+// template / image Tipe / path List
 std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates)
 {
 	for (std::string const& ct : combinationTemplates) {
@@ -76,7 +77,7 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 
 	for (size_t i = 0; i < temp.size(); i++) {
 		for (auto const& v : temp[i]) {
-			mapP[v.filename().string().substr(0, v.filename().string().find('(') - 1)] = v;
+			mapP[v.filename().string().substr(0, v.filename().string().find('(') - 1)].push_back(v);
 		}
 		size_t j = 0;
 
@@ -91,3 +92,4 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 
 	return fin;
 }
+

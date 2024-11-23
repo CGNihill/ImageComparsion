@@ -133,7 +133,7 @@ void UserIOMain::mainProcess() {
 		}
 		else
 			passed = true;
-		if(c == 0){
+		if (c == 0) {
 			for (auto& t : combinations) {
 				collageTemplate.push_back(t.second);
 			}
@@ -219,6 +219,65 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 	return out;
 }
 
+string UserIOMain::addNewMainPath()
+{
+	string p;
+	cout << "- Set new main path" << endl;
+	getline(cin, p);
+	if (!app.checkPath(p)) {
+		cout << "- Path does not exist" << endl;
+		cout << "- Try again" << endl;
+		return addNewMainPath();
+	}
+
+	return p;
+}
+
+vector<pair<string, string>> UserIOMain::addNewNamings()
+{
+	vector<pair<string, string>> n;
+
+	while (1) {
+		cout << "- Write [q] for exit from this function" << endl;
+		char q;
+		cin >> q;
+		if (q == 'q')
+			return;
+
+		cout << "- If you want to add a new name u need to know some thinks about syntaxis\n"
+			<< "- 1) You will set 2 thinks\n-\tFirst is the naming of the photos in explorer\n-\tFor the second you will set the name of refered photo in the final collage\n"
+			<< "- 2) If u will set a single name, for example (lumen | LUMEN) this application will search \'lumen\' in all the file name\n"
+			<< "- 3) You can use some variables, for example ({1}_lumen_{2} | {2}_LUMEN_{1}), in this case if the file will have a name like Camera1_lumen_Day, the otput name will be Day_LUMEN_Camera1 or DAY_LUMEN_CAMERA1" << endl;
+
+		string s, ss;
+		cout << "- Set the file name" << endl;
+		cin >> s;
+		cout << "- Set the file name" << endl;
+		cin >> ss;
+
+		bool b = false;
+		vector<char> c;
+		for (size_t i = 0; i < s.size(); i++) {
+			if (s[i] == '{')
+				c.push_back(s[i]);
+			else if (s[i] == '}' && c.size() > 0) {
+				c.pop_back();
+			}
+			else {
+				cout << "- Sintaxis erro\n-\tTry again" << endl;
+				b = true;
+				break;
+			}
+		}
+		if (b)
+			continue;
+
+		for (auto const& v : app.getNamings()) {
+			if (v.first == s && ss == v.second){}
+		}
+	}
+}
+
 void UserIOMain::checkTemplate(vector<pair<string, string>>& PTemp, pair<string, string>& newT) {
 	for (auto& t : PTemp) {
 		string tn = t.first, ntn = newT.first;
@@ -237,4 +296,49 @@ void UserIOMain::checkTemplate(vector<pair<string, string>>& PTemp, pair<string,
 	}
 }
 
-void UserIOMain::settings() {}
+void UserIOMain::settings() {
+	while (1) {
+		cout << "- Set the parameters what u whant to change:" << endl;
+		cout << "- 0) Return to main" << endl;
+		cout << "- 1) Main Path" << endl;
+		cout << "- 2) Path Template" << endl;
+		cout << "- 3) File Namings" << endl;
+		cout << "- 4) Comparsion Template" << endl;
+
+		unsigned short i;
+
+		cin >> i;
+
+		switch (i)
+		{
+		case 0:
+			return;
+			break;
+		case 1: {
+			vector<string> p = app.getPathList();
+			p.push_back(addNewMainPath());
+			app.setPathList(p);
+		}break;
+		case 2: {
+			vector<pair<string, string>> p = app.getPathTemplates();
+			p.push_back(createNewTemplate());
+			app.setPathTemplates(p);
+		}break;
+		case 3: {
+			vector<pair<string, string>> p = app.getNamings();
+			addNewNamings();
+
+		}break;
+		case 4: {
+			vector<pair<string, string>> p = app.getCombinationList();
+			p.push_back(createNewCollageTemplate());
+			app.setCombinationList(p);
+		}break;
+		default:
+			cout << "- There is no such answer\n- Try again" << endl;
+			break;
+		}
+
+		app.updateUserData();
+	}
+}

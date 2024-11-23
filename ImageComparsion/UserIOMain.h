@@ -12,6 +12,10 @@ private:
 	std::pair<std::string, std::string> createNewTemplate();
 	std::pair<std::string, std::string> createNewCollageTemplate();
 
+	// settings
+	std::string addNewMainPath();
+	std::vector<std::pair<std::string, std::string>> addNewNamings();
+
 public:
 	UserIOMain() = default;
 
