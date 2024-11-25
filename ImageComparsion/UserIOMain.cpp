@@ -112,7 +112,7 @@ void UserIOMain::mainProcess() {
 			}
 		}
 		else {
-			Ptemplate = pathT[choise - 3].second;
+			Ptemplate = pathT[choise - 4].second;
 		}
 
 	} while (!passed);
@@ -131,7 +131,7 @@ void UserIOMain::mainProcess() {
 		cin.clear();
 		cin >> c;
 
-		if (!(c < combinations.size() + 1)) {
+		if (!(c < (combinations.size() + 1) || c > 0)) {
 			passed = false;
 			cout << "- There is no such answer\n- Try again" << endl;
 		}
@@ -149,19 +149,20 @@ void UserIOMain::mainProcess() {
 			collageTemplate.push_back(nct.second);
 		}
 		else {
-			collageTemplate.push_back(combinations[c - 1].second);
+			collageTemplate.push_back(combinations[c - 2].second);
 		}
 
 		if (passed && c > 0) {
 			cout << "- Add one more template? [y/n]" << endl;
 			char ch;
+			cin.clear();
 			cin >> ch;
 			if (tolower(ch) == 'y')
 				passed = 0;
 		}
 	} while (!passed);
 
-
+	app.startCollageCreation(path, Ptemplate, collageTemplate);
 }
 
 pair<string, string> UserIOMain::createNewTemplate() {
@@ -170,7 +171,7 @@ pair<string, string> UserIOMain::createNewTemplate() {
 		<< "- Where @S is non constant value" << endl;
 
 	string pathTemplate = "";
-	cin.clear();
+	cin >> ws;
 	getline(cin, pathTemplate);
 
 	cout << "- Now set a new name for template" << endl;
@@ -220,7 +221,7 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 
 	cout << "\n- Set the combination" << endl;
 
-	cin.clear();
+	cin >> ws;
 	cin >> out.second;
 
 	return out;
@@ -262,7 +263,7 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 		cout << "- Set the file name" << endl;
 		cin.clear();
 		cin >> s;
-		cout << "- Set the file name" << endl;
+		cout << "- Set the Collage Name" << endl;
 		cin.clear();
 		cin >> ss;
 
@@ -274,7 +275,7 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 			else if (s[i] == '}' && c.size() > 0) {
 				c.pop_back();
 			}
-			else {
+			else if (s[i] == '}' && c.size() == 0){
 				cout << "- Sintaxis erro\n-\tTry again" << endl;
 				b = true;
 				break;
@@ -351,7 +352,7 @@ void UserIOMain::settings() {
 			vector<pair<string, string>> p = app.getNamings();
 			vector<pair<string, string>> v = addNewNamings();
 			p.insert(p.end(), v.begin(), v.end());
-
+			app.setNamings(p);
 		}break;
 		case 4: {
 			vector<pair<string, string>> p = app.getCombinationList();

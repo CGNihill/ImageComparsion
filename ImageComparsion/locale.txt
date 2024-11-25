@@ -1,7 +1,12 @@
 1
-C:\Users\MRADmitri\Downloads\Telegram Desktop\JakarskaHouse_Renders
+C:\Users\snipe\Downloads\Telegram Desktop\JakarskaHouse_Renders
+2
+UnrealLPR|1124324.12332.213.324
+Unreal|0.3
+4
+_Day_PathTrace|PT
+_Night_PathTrace|PT
+_Night_Lumen|LUMEN
+_Day_Lumenen|LUMEN
 1
-Unreal|1.2.3.4.2.4.1
-0
-1
-|
+Unreal|\WindowsEditor\@S
