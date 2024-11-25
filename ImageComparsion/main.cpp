@@ -14,6 +14,25 @@ using namespace std;
 
 int main() {
 	UserIOMain u;
-	u.mainProcess();
+	while (1) {
+		cout << "- 1) MainProcess\n- 2) Settings\n- 0) Quit" << endl;
+		short i;
+		cin.clear();
+		cin >> i;
+		switch (i)
+		{
+		case 0:
+			return 0;
+			break;
+		case 1:
+			u.mainProcess();
+			break;
+		case 2:
+			u.settings();
+			break;
+		default:
+			break;
+		}
+	}
 	return 0;
 }

@@ -88,5 +88,15 @@ void App::setNamings(std::vector <std::pair<std::string, std::string>>& data) { 
 void App::startCollageCreation(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates) {
 	updateUserData();
 	std::vector<std::vector<std::vector<fs::path>>> sortedPaths = PathTemplateEdit::getSortedImageList(mainPath, pathTemplate, combinationTemplates);
+
+
+	for (auto a : sortedPaths) {
+		for (auto b : a) {
+			std::cout << "\n\n\n" << std::endl;
+			for (auto c : b) {
+				std::cout << c << std::endl;
+			}
+		}
+	}
 }
 

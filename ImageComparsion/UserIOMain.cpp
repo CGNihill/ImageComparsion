@@ -27,13 +27,14 @@ void UserIOMain::mainProcess() {
 	bool passed = true;
 	do
 	{
+		cin >> ws;
 		getline(cin, path);
 
 		if (isN(path) && stoull(path) < 0 && stoull(path) > mainPaths.size() + 1) {
 			passed = false;
 			cout << "- There is no such answer\n- Try again" << endl;
 		}
-		else if (!this->app.checkPath(path)) {
+		else if (!isN(path) && !this->app.checkPath(path)) {
 			passed = false;
 			cout << "- The path does not exist\n- Try again" << endl;
 		}
@@ -43,7 +44,7 @@ void UserIOMain::mainProcess() {
 	} while (!passed);
 	// update User Data
 	if (isN(path))
-		path = mainPaths[-1];
+		path = mainPaths[stoull(path)-1];
 	bool b = true;
 	for (auto& p : mainPaths) {
 		if (p == path) {
@@ -69,6 +70,7 @@ void UserIOMain::mainProcess() {
 	do
 	{
 		size_t choise;
+		cin.clear();
 		cin >> choise;
 
 		if (!(choise <= pathT.size() + 3)) {
@@ -102,6 +104,7 @@ void UserIOMain::mainProcess() {
 		}
 		else if (choise == 3) {
 			cout << "- Select the template number or set another number to cancel" << endl;
+			cin.clear();
 			cin >> choise;
 			if (choise < pathT.size() + 2 && choise > 2) {
 				pathT.erase(pathT.begin() + (choise - 3));
@@ -125,6 +128,7 @@ void UserIOMain::mainProcess() {
 	vector<string> collageTemplate;
 	do {
 		size_t c;
+		cin.clear();
 		cin >> c;
 
 		if (!(c < combinations.size() + 1)) {
@@ -166,13 +170,14 @@ pair<string, string> UserIOMain::createNewTemplate() {
 		<< "- Where @S is non constant value" << endl;
 
 	string pathTemplate = "";
-	cin >> ws;
+	cin.clear();
 	getline(cin, pathTemplate);
 
 	cout << "- Now set a new name for template" << endl;
 
 	string pathTemplateName = "";
 
+	cin.clear();
 	getline(cin, pathTemplateName);
 
 	while (1) {
@@ -201,19 +206,21 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 	pair<string, string> out;
 
 	cout << "- Set collage template name" << endl;
+	cin.clear();
 	cin >> out.first;
 
 	cout << "- Now you need to set the combination of the images by the naming index\n"
 		<< "- For example\n- Names -> 1) @S_Lumen_Day | 2) @S_Lumen_Night | 3) @S_PT_Day | 4) @S_PT_Night ..."
-		<< "\n- Template -> 1.3 | 2.4 | 1.2 | 2.3 | ..." << endl;
+		<< "\n- Template -> 1.3 | 2.4 | 1.2 | 2.3 | ...\n" << endl;
 
 	cout << "- Current naming list (for changing the naming list or other UserData go to settings)" << endl;
 	for (size_t i = 0; i < this->app.getNamings().size(); i++) {
 		cout << "- " << i << ") " << this->app.getNamings()[i].first << " | " << this->app.getNamings()[i].second << endl;
 	}
 
-	cout << "- Set the combination" << endl;
+	cout << "\n- Set the combination" << endl;
 
+	cin.clear();
 	cin >> out.second;
 
 	return out;
@@ -223,6 +230,7 @@ string UserIOMain::addNewMainPath()
 {
 	string p;
 	cout << "- Set new main path" << endl;
+	cin.clear();
 	getline(cin, p);
 	if (!app.checkPath(p)) {
 		cout << "- Path does not exist" << endl;
@@ -240,9 +248,10 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 	while (1) {
 		cout << "- Write [q] for exit from this function" << endl;
 		char q;
+		cin.clear();
 		cin >> q;
 		if (q == 'q')
-			return;
+			break;
 
 		cout << "- If you want to add a new name u need to know some thinks about syntaxis\n"
 			<< "- 1) You will set 2 thinks\n-\tFirst is the naming of the photos in explorer\n-\tFor the second you will set the name of refered photo in the final collage\n"
@@ -251,8 +260,10 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 
 		string s, ss;
 		cout << "- Set the file name" << endl;
+		cin.clear();
 		cin >> s;
 		cout << "- Set the file name" << endl;
+		cin.clear();
 		cin >> ss;
 
 		bool b = false;
@@ -272,10 +283,20 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 		if (b)
 			continue;
 
+		b = true;
 		for (auto const& v : app.getNamings()) {
-			if (v.first == s && ss == v.second){}
+			if (v.first == s && ss == v.second){
+				b = false;
+				break;
+			}
+		}
+
+		if (b) {
+			n.push_back(make_pair(s, ss));
 		}
 	}
+
+	return n;
 }
 
 void UserIOMain::checkTemplate(vector<pair<string, string>>& PTemp, pair<string, string>& newT) {
@@ -284,6 +305,7 @@ void UserIOMain::checkTemplate(vector<pair<string, string>>& PTemp, pair<string,
 		if (t.second == newT.second && transform(tn.begin(), tn.end(), tn.begin(), [](unsigned char c) { return tolower(c); }) != transform(ntn.begin(), ntn.end(), ntn.begin(), [](unsigned char c) { return tolower(c); })) {
 			cout << "- This template already exist by name \"" << t.first << "\"\n- Rename template [Y/N]" << endl;
 			char a;
+			cin.clear();
 			cin >> a;
 			if (tolower(a) == 'y') {
 				t.first = newT.first;
@@ -307,6 +329,7 @@ void UserIOMain::settings() {
 
 		unsigned short i;
 
+		cin.clear();
 		cin >> i;
 
 		switch (i)
@@ -326,7 +349,8 @@ void UserIOMain::settings() {
 		}break;
 		case 3: {
 			vector<pair<string, string>> p = app.getNamings();
-			addNewNamings();
+			vector<pair<string, string>> v = addNewNamings();
+			p.insert(p.end(), v.begin(), v.end());
 
 		}break;
 		case 4: {
