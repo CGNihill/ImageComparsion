@@ -8,12 +8,12 @@
 #include <utility>
 #include <sstream>
 
-struct {
+struct UD{
     std::string defaultValForEmpty{ "0\n0\n0\n0" };
 
-	std::vector<std::string> paths;
+	static std::vector<std::string> paths;
 
-    std::vector<std::pair<std::string, std::string>> naming, pathTemplates, combinations; // (File Name Patern | Output Naming) , (template Name | Path), (combination name | combination)
+    static std::vector<std::pair<std::string, std::string>> naming, pathTemplates, combinations; // (File Name Patern | Output Naming) , (template Name | Path), (combination name | combination)
 
 	void parseUserData(std::vector<std::string> lines) {
         size_t pl = (size_t)std::stoull(lines[0]);
@@ -22,7 +22,7 @@ struct {
         size_t ptl = (size_t)std::stoull(lines[pl + cl + nl + 3]);
 		
 		for(size_t i = 0; i < pl; i++)
-			paths.push_back(lines[i+1]);
+			UD::paths.push_back(lines[i+1]);
 		
         for (size_t i = 0; i < cl; i++) {
             std::string cs = lines[i + pl + 2];
@@ -33,7 +33,7 @@ struct {
                 continue;
             }
 
-            combinations.push_back(std::make_pair(cs.substr(0, p), cs.substr(1 + p)));
+            UD::combinations.push_back(std::make_pair(cs.substr(0, p), cs.substr(1 + p)));
         }
 
 		for (size_t i = 0; i < nl; i++) {
@@ -45,7 +45,7 @@ struct {
                 continue;
             }
 
-			naming.push_back(std::make_pair(cs.substr(0, p), cs.substr(1+p)));
+			UD::naming.push_back(std::make_pair(cs.substr(0, p), cs.substr(1+p)));
 		}
 	
         for (size_t i = 0; i < ptl; i++) {
@@ -57,31 +57,31 @@ struct {
                 continue;
             }
 
-            pathTemplates.push_back(std::make_pair(cs.substr(0, p), cs.substr(1 + p)));
+            UD::pathTemplates.push_back(std::make_pair(cs.substr(0, p), cs.substr(1 + p)));
         }
     }
 
     std::string composeUserData() {
         std::string s = "";
 
-        s += std::to_string(paths.size()) + "\n";
+        s += std::to_string(UD::paths.size()) + "\n";
 
-        for (auto& l : paths)
+        for (auto& l : UD::paths)
             s += l + '\n';
 
-        s += std::to_string(combinations.size()) + "\n";
+        s += std::to_string(UD::combinations.size()) + "\n";
 
-        for (auto& l : combinations)
+        for (auto& l : UD::combinations)
             s += l.first + '|' + l.second + '\n';
 
-        s += std::to_string(naming.size()) + "\n";
+        s += std::to_string(UD::naming.size()) + "\n";
         
-        for (auto& l : naming)
+        for (auto& l : UD::naming)
             s += l.first + '|' + l.second + '\n';
 
-        s += std::to_string(pathTemplates.size()) + "\n";
+        s += std::to_string(UD::pathTemplates.size()) + "\n";
 
-        for (auto& l : pathTemplates)
+        for (auto& l : UD::pathTemplates)
             s += l.first + '|' + l.second + '\n';
 
 
@@ -93,13 +93,17 @@ struct {
         size_t i;
         while ((i = comb.find('.')) != std::string::npos) {
             int l = stoi(comb.substr(0, i));
-            if (l > naming.size() - 1) {
+            if (l > (UD::naming.size() - 1)) {
                 LOG(true, "naming by template index does't exist");
             }
 
-            temp.push_back(naming[l]);
+            temp.push_back(UD::naming[l]);
         }
         return temp;
     }
 
 } UserData;
+
+std::vector<std::string> UD::paths;
+
+std::vector<std::pair<std::string, std::string>> UD::naming, UD::pathTemplates, UD::combinations; // (File Name Patern | Output Naming) , (template Name | Path), (combination name | combination)
