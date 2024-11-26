@@ -44,7 +44,7 @@ void UserIOMain::mainProcess() {
 	} while (!passed);
 	// update User Data
 	if (isN(path))
-		path = mainPaths[stoull(path)-1];
+		path = mainPaths[(size_t)(stoull(path) - 1)];
 	bool b = true;
 	for (auto& p : mainPaths) {
 		if (p == path) {

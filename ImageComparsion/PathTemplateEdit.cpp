@@ -41,14 +41,15 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 	std::vector<std::vector<fs::path>> temp;
 
 	std::vector<std::vector<std::vector<std::string>>> cleanedNamings;
-	//cleanedNamings.reserve(cName.size());
+	cleanedNamings.resize(cName.size());
 
 	for (size_t i = 0; i < cName.size(); i++) {
-		cleanedNamings.push_back({});
 		for (auto const& v : cName[i]) {
 			cleanedNamings[i].push_back(cleanName(v.first));
 		}
 	}
+
+	temp.resize(cleanedNamings.size());
 
 	for (size_t i = 0; i < cleanedNamings.size(); i++) {
 		for (auto const& v : allImgL) {
@@ -72,7 +73,7 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 	}
 
 	std::vector<std::vector<std::vector<fs::path>>> fin;
-	fin.reserve(temp.size());
+	fin.resize(temp.size());
 
 	std::map<std::string, std::vector<fs::path>> mapP;
 

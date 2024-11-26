@@ -86,6 +86,7 @@ inline std::vector<fs::path> FileChecker::getImgs(fs::path mainP, std::vector<st
 			}
 			return imgs;
 		}
+		std::cout << "fuck u" << std::endl;
 		// need to check
 		mainP /= subP[i];
 	}
