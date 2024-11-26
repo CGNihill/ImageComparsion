@@ -161,7 +161,7 @@ void UserIOMain::mainProcess() {
 				passed = 0;
 		}
 	} while (!passed);
-
+	cout << "start collage creation" << endl;
 	app.startCollageCreation(path, Ptemplate, collageTemplate);
 }
 

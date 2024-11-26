@@ -95,8 +95,12 @@ struct UD {
 		std::vector<std::pair<std::string, std::string>> temp;
 		size_t i;
 		while ((i = comb.find('.')) != std::string::npos) {
+			std::cout << comb << std::endl;
+			std::cout << comb.substr(0,i) << std::endl;
+
+			std::cout << "stoull1 " << std::endl;
 			size_t l = stoull(comb.substr(0, i));
-			comb.erase(0, (l + 2));
+			comb.erase(0, (i + 1));
 			if (l > (naming.size() - 1)) {
 				LOG(true, "naming by template index does't exist");
 			}
@@ -104,10 +108,17 @@ struct UD {
 			temp.push_back(naming[l]);
 
 			if (comb.find('.') == std::string::npos){
+				std::cout << comb << std::endl;
+				std::cout << "stoull2 " << std::endl;
+
 				size_t l = stoull(comb);
 				temp.push_back(naming[l]);
 
 			}
+		}
+
+		for (auto t : temp) {
+			std::cout << t.first << '|' << t.second << std::endl;
 		}
 		return temp;
 	}

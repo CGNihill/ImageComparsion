@@ -26,6 +26,7 @@ std::vector<std::string> PathTemplateEdit::cleanName(std::string n)
 	if (n.find('}') != std::string::npos)
 		LOG(true, "File naming Exception File -> " + n + " \'{\' not exists \'}\' exists");
 
+	temp.push_back(n);
 	return temp;
 }
 
@@ -38,8 +39,6 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 
 	std::vector<std::filesystem::path> allImgL = FileChecker::getAllImages(mainPath, pathTemplate);
 
-	std::vector<std::vector<fs::path>> temp;
-
 	std::vector<std::vector<std::vector<std::string>>> cleanedNamings;
 	cleanedNamings.resize(cName.size());
 
@@ -49,49 +48,38 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 		}
 	}
 
-	temp.resize(cleanedNamings.size());
-
+	std::vector<std::vector<std::vector<fs::path>>> tf;
+	tf.resize(cleanedNamings.size());
 	for (size_t i = 0; i < cleanedNamings.size(); i++) {
-		for (auto const& v : allImgL) {
-			bool b = false;
-			for (auto const& c : cleanedNamings[i]) {
-				size_t f = 0, j;
-				for (j = 0; j < c.size(); j++) {
-					if (v.filename().string().find(c[j]) == std::string::npos || v.filename().string().find(c[j]) < f)
+		tf[i].resize(cleanedNamings[i].size());
+	}
+
+	for (size_t i = 0; i < allImgL.size(); i++) {
+		for (size_t j = 0; j < cleanedNamings.size(); j++) {
+			for (size_t o = 0; o < cleanedNamings[j].size(); o++) {
+				bool b = true;
+				size_t t = 0;
+				for (auto const& s : cleanedNamings[j][o]) {
+					if (allImgL[i].filename().string().find(s) == std::string::npos || t > allImgL[i].filename().string().find(s)) {
+						b = false;
 						break;
-					f = v.filename().string().find(c[j]);
+					}
+					t = allImgL[i].filename().string().find(s);
 				}
-				if (!(j < c.size())) {
-					b = true;
+				if (b) {
+					tf[j][o].push_back(allImgL[i]);
 					break;
 				}
 			}
-			if (b) {
-				temp[i].push_back(allImgL[i]);
-			}
 		}
 	}
 
-	std::vector<std::vector<std::vector<fs::path>>> fin;
-	fin.resize(temp.size());
-
-	std::map<std::string, std::vector<fs::path>> mapP;
-
-	for (size_t i = 0; i < temp.size(); i++) {
-		for (auto const& v : temp[i]) {
-			mapP[v.filename().string().substr(0, v.filename().string().find('(') - 1)].push_back(v);
-		}
-		size_t j = 0;
-
-		for (auto const& [k,v] : mapP) {
-			
-			for (auto const& b : v) {
-				fin[i][j].push_back(b);
-			}
-			j++;
+	for (auto &s : tf) {
+		for (auto &a : s) {
+			std::sort(a.begin(), a.end());
 		}
 	}
 
-	return fin;
+	return tf;
 }
 
