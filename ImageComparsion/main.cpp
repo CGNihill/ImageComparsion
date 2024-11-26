@@ -13,6 +13,9 @@
 using namespace std;
 
 int main() {
+	try
+	{
+
 	UserIOMain u;
 	while (1) {
 		cout << "- 1) MainProcess\n- 2) Settings\n- 0) Quit" << endl;
@@ -33,6 +36,11 @@ int main() {
 		default:
 			break;
 		}
+	}
+	}
+	catch (const std::exception&e)
+	{
+		cout << e.what() << endl;
 	}
 	return 0;
 }

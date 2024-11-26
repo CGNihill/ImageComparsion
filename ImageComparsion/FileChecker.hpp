@@ -86,8 +86,8 @@ inline std::vector<fs::path> FileChecker::getImgs(fs::path mainP, std::vector<st
 			}
 			return imgs;
 		}
-
-		mainP += subP[i];
+		// need to check
+		mainP /= subP[i];
 	}
 
 	for (auto const& d : fs::directory_iterator(mainP))
@@ -112,7 +112,7 @@ inline std::vector<std::string> FileChecker::checkMainPaths(std::vector<std::str
 inline std::vector<fs::path> FileChecker::getAllImages(fs::path mp, std::string pt) {
 	std::vector<std::string> temp = parsePathTemplate(pt);
 
-	if (pt != "")
+	if (pt == "")
 		return getImgsRecursive(mp);
 
 	return getImgs(mp, temp);

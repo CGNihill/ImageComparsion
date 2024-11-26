@@ -127,6 +127,7 @@ void UserIOMain::mainProcess() {
 
 	vector<string> collageTemplate;
 	do {
+		cout << "- Set : ";
 		size_t c;
 		cin.clear();
 		cin >> c;
@@ -155,7 +156,6 @@ void UserIOMain::mainProcess() {
 		if (passed && c > 0) {
 			cout << "- Add one more template? [y/n]" << endl;
 			char ch;
-			cin.clear();
 			cin >> ch;
 			if (tolower(ch) == 'y')
 				passed = 0;
@@ -248,11 +248,6 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 
 	while (1) {
 		cout << "- Write [q] for exit from this function" << endl;
-		char q;
-		cin.clear();
-		cin >> q;
-		if (q == 'q')
-			break;
 
 		cout << "- If you want to add a new name u need to know some thinks about syntaxis\n"
 			<< "- 1) You will set 2 thinks\n-\tFirst is the naming of the photos in explorer\n-\tFor the second you will set the name of refered photo in the final collage\n"
@@ -266,6 +261,9 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 		cout << "- Set the Collage Name" << endl;
 		cin.clear();
 		cin >> ss;
+
+		if (s == "q" || ss == "q")
+			break;
 
 		bool b = false;
 		vector<char> c;

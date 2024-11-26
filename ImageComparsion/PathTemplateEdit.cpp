@@ -23,17 +23,17 @@ std::vector<std::string> PathTemplateEdit::cleanName(std::string n)
 		n.erase(n.begin(), n.begin() + l);
 	}
 
-	if (n.find('}') == std::string::npos)
+	if (n.find('}') != std::string::npos)
 		LOG(true, "File naming Exception File -> " + n + " \'{\' not exists \'}\' exists");
 
 	return temp;
 }
 
 // template / image Tipe / path List
-std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates)
+std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImageList(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates, UD &Ud)
 {
 	for (std::string const& ct : combinationTemplates) {
-		cName.push_back(UserData.getNamingsByTemplate(ct));
+		cName.push_back(Ud.getNamingsByTemplate(ct));
 	}
 
 	std::vector<std::filesystem::path> allImgL = FileChecker::getAllImages(mainPath, pathTemplate);
@@ -41,9 +41,10 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 	std::vector<std::vector<fs::path>> temp;
 
 	std::vector<std::vector<std::vector<std::string>>> cleanedNamings;
-	cleanedNamings.reserve(cName.size());
+	//cleanedNamings.reserve(cName.size());
 
 	for (size_t i = 0; i < cName.size(); i++) {
+		cleanedNamings.push_back({});
 		for (auto const& v : cName[i]) {
 			cleanedNamings[i].push_back(cleanName(v.first));
 		}
