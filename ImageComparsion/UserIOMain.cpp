@@ -226,7 +226,6 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 
 	return out;
 }
-
 string UserIOMain::addNewMainPath()
 {
 	string p;
@@ -241,7 +240,6 @@ string UserIOMain::addNewMainPath()
 
 	return p;
 }
-
 vector<pair<string, string>> UserIOMain::addNewNamings()
 {
 	vector<pair<string, string>> n;

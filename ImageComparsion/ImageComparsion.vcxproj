@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="App.cpp" />
     <ClCompile Include="ErrLog.hpp" />
+    <ClCompile Include="ImageEditor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PathTemplateEdit.cpp" />
     <ClCompile Include="UserIOMain.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="FileChecker.hpp" />
+    <ClInclude Include="ImageEditor.h" />
     <ClInclude Include="PathTemplateEdit.h" />
     <ClInclude Include="UserData.hpp" />
     <ClInclude Include="UserIOMain.h" />

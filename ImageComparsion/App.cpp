@@ -2,6 +2,7 @@
 #include "ErrLog.hpp"
 #include "FileChecker.hpp"
 #include "PathTemplateEdit.h"
+#include "ImageEditor.h"
 
 #include <stdexcept>
 #include <fstream>
@@ -87,7 +88,6 @@ void App::setNamings(std::vector <std::pair<std::string, std::string>>& data) { 
 
 void App::startCollageCreation(std::string mainPath, std::string pathTemplate, std::vector<std::string> combinationTemplates) {
 	updateUserData();
-	std::vector<std::vector<std::vector<fs::path>>> sortedPaths = PathTemplateEdit::getSortedImageList(mainPath, pathTemplate, combinationTemplates, UserData);
-
+	auto sortedPaths = PathTemplateEdit::getSortedImageList(mainPath, pathTemplate, combinationTemplates, UserData);
 }
 

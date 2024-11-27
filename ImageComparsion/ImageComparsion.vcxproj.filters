@@ -24,10 +24,13 @@
     <ClCompile Include="ErrLog.hpp">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="PTemplateEdit.cpp">
+    <ClCompile Include="UserIOMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserIOMain.cpp">
+    <ClCompile Include="PathTemplateEdit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,10 +44,13 @@
     <ClInclude Include="FileChecker.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PTemplateEdit.h">
+    <ClInclude Include="UserIOMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UserIOMain.h">
+    <ClInclude Include="PathTemplateEdit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageEditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
