@@ -19,8 +19,8 @@ public:
 	
 
 	static void loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::vector<std::pair<std::string, std::string>> namings);
-	static std::vector<size_t> getPossibleCompareResolution();
-	static void setCompareResolution(size_t resByOrientation, Orientation orientation);
+	static std::vector<int> getPossibleCompareResolution();
+	static void setCompareResolution(int resolution);
 	static void startCompareGeneration();
 	static void uploadColages(fs::path outPath, std::string outputName);
 
@@ -32,6 +32,9 @@ private:
 	};
 
 	static std::vector<Img> images;
+	static int mainCompareResolution;
 
 	static Orientation getImageOrinetation(cv::Mat&);
+	static void resizeImages(Img&);
+	static std::pair<int, int> calculateNewSize(int, int);
 };
