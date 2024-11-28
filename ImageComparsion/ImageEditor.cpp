@@ -8,8 +8,6 @@
 #include <algorithm>
 
 #include <opencv2/opencv.hpp>
-//#include <opencv2/core.hpp>
-//#include <opencv2/imgcodecs.hpp>
 
 namespace fs = std::filesystem;
 
@@ -68,6 +66,30 @@ void ImageEditor::setCompareResolution(int resolution)
 
 void ImageEditor::startCompareGeneration()
 {
+	/*
+	* - get images secondary size
+	* - create a summ and add 10-15% for text
+	* - create the canvas using the summ
+	* - set images on canvas
+	* - write text on canvas
+	*/
+
+	for (auto& a : images) {
+		int s = 0;
+		for (auto const& ic : a.images) {
+			s += (a.o == Orientation::H) ? ic.first.cols : ic.first.rows;
+		}
+
+		s += (s * 0.1); // add 10%
+		int space = (s * 0.1) / a.images.size();
+
+		(a.o == Orientation::H) ? a.Compare.create(mainCompareResolution, s, CV_8UC3) : a.Compare.create(s, mainCompareResolution, CV_8UC3);
+		a.Compare.setTo(cv::Scalar(50, 50, 50));
+
+		for (auto const& ic : a.images) {
+
+		}
+	}
 }
 
 void ImageEditor::uploadColages(fs::path outPath, std::string outputName)

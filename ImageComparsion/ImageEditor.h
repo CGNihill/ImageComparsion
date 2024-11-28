@@ -4,7 +4,7 @@
 #include <utility>
 #include <filesystem>
 
-#include <opencv2/core.hpp>
+#include <opencv2/opencv.hpp>
 
 namespace fs = std::filesystem;
 
@@ -28,7 +28,7 @@ private:
 	struct Img {
 		std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>> images; // Images and naming in Compare
 		cv::Mat Compare;
-		Orientation o;
+		Orientation o = Orientation::H;
 	};
 
 	static std::vector<Img> images;

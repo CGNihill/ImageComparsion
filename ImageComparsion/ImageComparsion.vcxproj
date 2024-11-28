@@ -153,6 +153,7 @@
     <ClInclude Include="FileChecker.hpp" />
     <ClInclude Include="ImageEditor.h" />
     <ClInclude Include="PathTemplateEdit.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="UserData.hpp" />
     <ClInclude Include="UserIOMain.h" />
   </ItemGroup>
