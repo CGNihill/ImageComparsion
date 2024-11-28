@@ -2,8 +2,10 @@
 #include "ImageEditor.h"
 
 #include <vector>
+#include <map>
 #include <utility>
 #include <filesystem>
+#include <algorithm>
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -34,9 +36,23 @@ void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std:
 	}
 }
 
-std::vector<std::pair<size_t, size_t>> ImageEditor::getPossibleCompareResolution()
+// first for vertical collage second for horizomtal
+std::vector<size_t> ImageEditor::getPossibleCompareResolution()
 {
-	return std::vector<std::pair<size_t, size_t>>();
+	std::map<size_t, short> h;
+	for (auto const& i : images) {
+		for (auto const& m : i.images) {
+			(i.o == Orientation::V) ? h[m.first.rows] = true : h[m.first.cols] = true;
+		}
+	}
+
+	std::vector<size_t> d;
+	for (auto const& [k, v] : h) {
+		d.push_back(k);
+	}
+	std::sort(d.begin(), d.end());
+
+	return d;
 }
 
 void ImageEditor::setCompareResolution(size_t resByOrientation, Orientation orientation)
