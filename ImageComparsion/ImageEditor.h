@@ -26,10 +26,12 @@ public:
 
 private:
 	struct Img {
-		std::vector<std::pair<cv::Mat, std::string>> images; // Images and naming in Compare
+		std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>> images; // Images and naming in Compare
 		cv::Mat Compare;
 		Orientation o;
 	};
 
 	static std::vector<Img> images;
+
+	static Orientation getImageOrinetation(cv::Mat&);
 };
