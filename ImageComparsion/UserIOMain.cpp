@@ -1,6 +1,8 @@
 #include "UserIOMain.h"
 #include "App.h"
 
+#include "ImageEditor.h"
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -162,7 +164,31 @@ void UserIOMain::mainProcess() {
 		}
 	} while (!passed);
 	cout << "start collage creation" << endl;
-	app.startCollageCreation(path, Ptemplate, collageTemplate);
+	auto data = app.sortImagesAndNamings(path, Ptemplate, collageTemplate);
+
+	for (size_t i = 0; i < data.first.size(); i++) {
+		for (size_t j = 0; j < data.first[i].size(); j++) {
+			ImageEditor::loadImagesSingleCollage(data.first[i][j], data.second[i][j]);
+			auto res = ImageEditor::getPossibleCompareResolution();
+			cout << "- Set main resolution - (curent):" << endl;
+			for (auto const& d : res) {
+				cout << d << endl;
+			}
+			int nr;
+			cin >> nr;
+			ImageEditor::setCompareResolution(nr);
+			ImageEditor::startCompareGeneration();
+			cout << "- Set Path for output" << endl;
+			string ops, ons;
+			cin >> ops;
+			cout << "- Set output file name" << endl;
+			cin.clear();
+			cin >> ons;
+
+			ImageEditor::uploadColages(ops, "ons");
+		}
+	}
+	
 }
 
 pair<string, string> UserIOMain::createNewTemplate() {

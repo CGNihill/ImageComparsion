@@ -73,12 +73,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;C:\Users\snipe\CppLibs\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\snipe\CppLibs\opencv\build\include;C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;C:\Users\snipe\CppLibs\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ExternalIncludePath>$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>C:\Users\MRADmitri\Downloads\opencv\build\x64\vc16\lib;C:\Users\snipe\CppLibs\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\Users\snipe\CppLibs\opencv\build\include;C:\Users\MRADmitri\Downloads\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\MRADmitri\Downloads\opencv\build\include;C:\Users\snipe\CppLibs\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

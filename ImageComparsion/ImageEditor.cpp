@@ -14,20 +14,20 @@ namespace fs = std::filesystem;
 std::vector<ImageEditor::Img> ImageEditor::images = {};
 int ImageEditor::mainCompareResolution = {};
 
-void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::vector<std::pair<std::string, std::string>> namings)
+void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::pair<std::string, std::string> namings)
 {
-	if (imagesPath.size() != namings.size()) {
-		LOG(true, "Wrong function arguments");
-	}
-
 	Orientation o = Orientation::H;
 
+	Img img;
 	for (size_t i = 0; i < imagesPath.size(); i++) {
-		Img img;
-		img.images.push_back(std::make_pair(cv::imread(imagesPath[i].string()), namings[i]));
+		img.images.push_back(std::make_pair(cv::imread(imagesPath[i].string()), namings));
+		if (img.images[img.images.size() - 1].first.empty()) {
+			std::string log = "Failed to load image: " + imagesPath[i].string();
+			LOG(true, log);
+		}
 		size_t ims = (img.images.size() - 1);
 
-		if (i > 0 && o == getImageOrinetation(img.images[ims].first)) {
+		if (i > 0 && o != getImageOrinetation(img.images[ims].first)) {
 			std::string log = "Images have different orientation [check file naming or redu  the renders whith correct image orientation\n"
 				+ imagesPath[i].string() + "\n" + imagesPath[i - 1].string() + "\n";
 			LOG(true, log);
@@ -35,7 +35,10 @@ void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std:
 
 		o = getImageOrinetation(img.images[ims].first);
 		img.o = o;
+
+		images.push_back(img);
 	}
+	std::cout << img.images.size() << std::endl;
 }
 
 // first for vertical collage second for horizomtal
@@ -52,7 +55,9 @@ std::vector<int> ImageEditor::getPossibleCompareResolution()
 	for (auto const& [k, v] : h) {
 		d.push_back(k);
 	}
+	std::cout << images.size() << std::endl;
 	std::sort(d.begin(), d.end());
+	std::cout << d.size() << std::endl;
 
 	return d;
 }
@@ -107,6 +112,9 @@ void ImageEditor::uploadColages(fs::path outPath, std::string outputName)
 	int i = 0;
 	for (auto const& ic : images) {
 		cv::imwrite(outPath.string() + "/" + outputName + std::to_string(i) + ".png", ic.Compare);
+		cv::Exception e;
+		cv::error(e);
+		std::cerr << e.what() << std::endl;
 	}
 }
 

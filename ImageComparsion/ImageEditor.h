@@ -18,7 +18,7 @@ public:
 	ImageEditor(ImageEditor const&) = delete;
 	
 
-	static void loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::vector<std::pair<std::string, std::string>> namings);
+	static void loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::pair<std::string, std::string> namings);
 	static std::vector<int> getPossibleCompareResolution();
 	static void setCompareResolution(int resolution);
 	static void startCompareGeneration();
