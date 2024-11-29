@@ -104,6 +104,10 @@ void ImageEditor::startCompareGeneration()
 
 void ImageEditor::uploadColages(fs::path outPath, std::string outputName)
 {
+	int i = 0;
+	for (auto const& ic : images) {
+		cv::imwrite(outPath.string() + "/" + outputName + std::to_string(i) + ".png", ic.Compare);
+	}
 }
 
 ImageEditor::Orientation ImageEditor::getImageOrinetation(cv::Mat& im)
