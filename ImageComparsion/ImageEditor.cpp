@@ -19,7 +19,7 @@ void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std:
 	if (imagesPath.size() != namings.size()) {
 		LOG(true, "Wrong function arguments");
 	}
-	
+
 	Orientation o = Orientation::H;
 
 	for (size_t i = 0; i < imagesPath.size(); i++) {
@@ -83,20 +83,22 @@ void ImageEditor::startCompareGeneration()
 		s += (s * 0.1); // add 10%
 		int space = (s * 0.1) / a.images.size();
 
-		a.Compare = (a.o == Orientation::H) ? cv::Mat(mainCompareResolution, s, CV_8UC3) : cv::Mat(s, mainCompareResolution, CV_8UC3);
+		a.Compare = (a.o == Orientation::H) ? cv::Mat(s, mainCompareResolution, CV_8UC3) : cv::Mat(mainCompareResolution, s, CV_8UC3);
 		a.Compare.setTo(cv::Scalar(50, 50, 50));
 
 		int coordinate = 0;
 		for (auto const& ic : a.images) {
 			if (a.o == Orientation::H) {
-				ic.first.copyTo(a.Compare(cv::Rect(0, coordinate, mainCompareResolution, ic.first.cols)));
-				coordinate += (ic.first.cols + space);
-			}
-			else {
-				ic.first.copyTo(a.Compare(cv::Rect(coordinate, 0, ic.first.rows, mainCompareResolution)));
+				ic.first.copyTo(a.Compare(cv::Rect(0, coordinate, mainCompareResolution, ic.first.rows)));
 				coordinate += (ic.first.rows + space);
 			}
+			else {
+				ic.first.copyTo(a.Compare(cv::Rect(coordinate, 0, ic.first.cols, mainCompareResolution)));
+				coordinate += (ic.first.cols + space);
+			}
 		}
+
+		writeTextToCompare(a.images, s, a.Compare);
 	}
 }
 
@@ -117,7 +119,7 @@ void ImageEditor::resizeImages(Img& imgs)
 	for (auto& i : imgs.images) {
 		cv::Mat& ic = i.first;
 		std::pair<int, int> newDimensions;
-		(imgs.o == Orientation::H)? newDimensions = calculateNewSize(ic.cols, ic.rows) : newDimensions = calculateNewSize(ic.rows, ic.cols);
+		(imgs.o == Orientation::H) ? newDimensions = calculateNewSize(ic.cols, ic.rows) : newDimensions = calculateNewSize(ic.rows, ic.cols);
 		cv::Mat ric;
 		(imgs.o == Orientation::H) ? cv::resize(ic, ric, cv::Size(newDimensions.first, newDimensions.second)) : cv::resize(ic, ric, cv::Size(newDimensions.second, newDimensions.first));
 		ic = ric;
@@ -129,4 +131,17 @@ std::pair<int, int> ImageEditor::calculateNewSize(int first, int second)
 	long double p = (long double)first / ImageEditor::mainCompareResolution;
 
 	return { ImageEditor::mainCompareResolution, (int)(second * p) };
+}
+
+void ImageEditor::writeTextToCompare(std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>> &images, int space, cv::Mat &colage)
+{
+	for (auto const& a : images) {
+		cv::putText(colage,
+			a.second.second,
+			cv::Point(0, 0),
+			cv::FONT_HERSHEY_DUPLEX,
+			1.0,
+			CV_RGB(255, 0, 0),
+			2);
+	}
 }

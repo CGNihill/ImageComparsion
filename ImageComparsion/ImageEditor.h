@@ -37,4 +37,5 @@ private:
 	static Orientation getImageOrinetation(cv::Mat&);
 	static void resizeImages(Img&);
 	static std::pair<int, int> calculateNewSize(int, int);
+	static void writeTextToCompare(std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>>&, int, cv::Mat&);
 };
