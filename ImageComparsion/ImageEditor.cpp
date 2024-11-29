@@ -77,7 +77,7 @@ void ImageEditor::startCompareGeneration()
 	for (auto& a : images) {
 		int s = 0;
 		for (auto const& ic : a.images) {
-			s += (a.o == Orientation::H) ? ic.first.cols : ic.first.rows;
+			s += (a.o == Orientation::H) ? ic.first.rows : ic.first.cols;
 		}
 
 		s += (s * 0.1); // add 10%
@@ -107,7 +107,7 @@ void ImageEditor::uploadColages(fs::path outPath, std::string outputName)
 ImageEditor::Orientation ImageEditor::getImageOrinetation(cv::Mat& im)
 {
 	Orientation o = Orientation::H;
-	if (im.rows < im.cols)
+	if (im.rows > im.cols)
 		o = Orientation::V;
 	return o;
 }
@@ -117,7 +117,7 @@ void ImageEditor::resizeImages(Img& imgs)
 	for (auto& i : imgs.images) {
 		cv::Mat& ic = i.first;
 		std::pair<int, int> newDimensions;
-		(imgs.o == Orientation::H)? newDimensions = calculateNewSize(ic.rows, ic.cols) : newDimensions = calculateNewSize(ic.cols, ic.rows);
+		(imgs.o == Orientation::H)? newDimensions = calculateNewSize(ic.cols, ic.rows) : newDimensions = calculateNewSize(ic.rows, ic.cols);
 		cv::Mat ric;
 		(imgs.o == Orientation::H) ? cv::resize(ic, ric, cv::Size(newDimensions.first, newDimensions.second)) : cv::resize(ic, ric, cv::Size(newDimensions.second, newDimensions.first));
 		ic = ric;
