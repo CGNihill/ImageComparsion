@@ -2,8 +2,11 @@
 
 #include "UserData.hpp"
 
+#include <filesystem>
 #include <fstream>
 #include <vector>
+
+namespace fs = std::filesystem;
 
 class App
 {
@@ -34,7 +37,7 @@ public:
 
 	void updateUserData();
 
-	void startCollageCreation(std::string, std::string, std::vector<std::string>);
+	std::pair<std::vector<std::vector<std::vector<fs::path>>>, std::vector<std::vector<std::pair<std::string, std::string>>>> sortImagesAndNamings(std::string, std::string, std::vector<std::string>);
 
 
 	//void getImageList(std::string);
