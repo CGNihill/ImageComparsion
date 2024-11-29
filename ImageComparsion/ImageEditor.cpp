@@ -83,11 +83,19 @@ void ImageEditor::startCompareGeneration()
 		s += (s * 0.1); // add 10%
 		int space = (s * 0.1) / a.images.size();
 
-		(a.o == Orientation::H) ? a.Compare.create(mainCompareResolution, s, CV_8UC3) : a.Compare.create(s, mainCompareResolution, CV_8UC3);
+		a.Compare = (a.o == Orientation::H) ? cv::Mat(mainCompareResolution, s, CV_8UC3) : cv::Mat(s, mainCompareResolution, CV_8UC3);
 		a.Compare.setTo(cv::Scalar(50, 50, 50));
 
+		int coordinate = 0;
 		for (auto const& ic : a.images) {
-
+			if (a.o == Orientation::H) {
+				ic.first.copyTo(a.Compare(cv::Rect(0, coordinate, mainCompareResolution, ic.first.cols)));
+				coordinate += (ic.first.cols + space);
+			}
+			else {
+				ic.first.copyTo(a.Compare(cv::Rect(coordinate, 0, ic.first.rows, mainCompareResolution)));
+				coordinate += (ic.first.rows + space);
+			}
 		}
 	}
 }
