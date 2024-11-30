@@ -14,18 +14,22 @@ namespace fs = std::filesystem;
 std::vector<ImageEditor::Img> ImageEditor::images = {};
 int ImageEditor::mainCompareResolution = {};
 
-void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::pair<std::string, std::string> namings)
+// load images for one comparsion
+void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::vector<std::string> namings)
 {
 	Orientation o = Orientation::H;
 
 	Img img;
+
 	for (size_t i = 0; i < imagesPath.size(); i++) {
-		img.images.push_back(std::make_pair(cv::imread(imagesPath[i].string()), namings));
-		if (img.images[img.images.size() - 1].first.empty()) {
+		img.images.push_back(std::make_pair(cv::imread(imagesPath[i].string()), namings[i]));
+		
+		size_t ims = (img.images.size() - 1);
+		
+		if (img.images[ims].first.empty()) {
 			std::string log = "Failed to load image: " + imagesPath[i].string();
 			LOG(true, log);
 		}
-		size_t ims = (img.images.size() - 1);
 
 		if (i > 0 && o != getImageOrinetation(img.images[ims].first)) {
 			std::string log = "Images have different orientation [check file naming or redu  the renders whith correct image orientation\n"
@@ -34,11 +38,10 @@ void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std:
 		}
 
 		o = getImageOrinetation(img.images[ims].first);
-		img.o = o;
-
-		images.push_back(img);
 	}
-	std::cout << img.images.size() << std::endl;
+
+	img.o = o;
+	images.push_back(img);
 }
 
 // first for vertical collage second for horizomtal
@@ -68,16 +71,78 @@ void ImageEditor::setCompareResolution(int resolution)
 	for (auto& img : images)
 		resizeImages(img);
 }
+/*
+void ImageEditor::startCompareGeneration()
+{
+	for (auto& a : images) {
+		int s = 0;
+
+		for (auto const& ic : a.images) {
+			if (ic.first.empty()) {
+				LOG(true, "Empty image found. Skipping...");
+				continue;
+			}
+			s += (a.o == Orientation::H) ? ic.first.rows : ic.first.cols;
+		}
+
+		s += static_cast<int>(s * 0.1);
+		int space = static_cast<int>((s * 0.1) / a.images.size());
+
+		if (a.o == Orientation::H) {
+			a.Compare = cv::Mat(s, mainCompareResolution, CV_8UC3);
+		}
+		else {
+			a.Compare = cv::Mat(mainCompareResolution, s, CV_8UC3);
+		}
+
+		a.Compare.setTo(cv::Scalar(50, 50, 50));
+
+		int coordinate = 0;
+
+		for (auto const& ic : a.images) {
+			if (ic.first.empty()) {
+				LOG(true, "Empty image encountered. Skipping...");
+				continue;
+			}
+
+			if (a.o == Orientation::H) {
+				if (coordinate + ic.first.rows > a.Compare.rows) {
+					LOG(true, "Image height exceeds canvas size. Skipping...");
+					continue;
+				}
+
+				if (ic.first.cols != mainCompareResolution) {
+					LOG(true, "Image width does not match canvas width. Resizing...");
+					cv::resize(ic.first, ic.first, cv::Size(mainCompareResolution, ic.first.rows));
+				}
+
+				ic.first.copyTo(a.Compare(cv::Rect(0, coordinate, mainCompareResolution, ic.first.rows)));
+				coordinate += (ic.first.rows + space);
+			}
+			else {
+				if (coordinate + ic.first.cols > a.Compare.cols) {
+					LOG(true, "Image width exceeds canvas size. Skipping...");
+					continue;
+				}
+
+				if (ic.first.rows != mainCompareResolution) {
+					LOG(false, "Image height does not match canvas height. Resizing...");
+					cv::resize(ic.first, ic.first, cv::Size(ic.first.cols, mainCompareResolution));
+				}
+
+				ic.first.copyTo(a.Compare(cv::Rect(coordinate, 0, ic.first.cols, mainCompareResolution)));
+				coordinate += (ic.first.cols + space);
+			}
+		}
+
+		writeTextToCompare(a.images, s, a.Compare);
+	}
+}
+*/
+
 
 void ImageEditor::startCompareGeneration()
 {
-	/*
-	* - get images secondary size
-	* - create a summ and add 10-15% for text
-	* - create the canvas using the summ
-	* - set images on canvas
-	* - write text on canvas
-	*/
 
 	for (auto& a : images) {
 		int s = 0;
@@ -85,10 +150,19 @@ void ImageEditor::startCompareGeneration()
 			s += (a.o == Orientation::H) ? ic.first.rows : ic.first.cols;
 		}
 
-		s += (s * 0.1); // add 10%
+		s += (int)(s * 0.1); // add 10%
 		int space = (s * 0.1) / a.images.size();
+		int check = space * a.images.size();
+		for (auto const& ic : a.images) {
+			check += (a.o == Orientation::H) ? ic.first.rows : ic.first.cols;
+		}
+	/*	if (s != check) {
+			std::cout << s << " " << check << std::endl;
+			exit(0);
+		}*/
 
-		a.Compare = (a.o == Orientation::H) ? cv::Mat(s, mainCompareResolution, CV_8UC3) : cv::Mat(mainCompareResolution, s, CV_8UC3);
+		//a.Compare = (a.o == Orientation::H) ? cv::Mat(check, mainCompareResolution, CV_8UC3) : cv::Mat(mainCompareResolution, check, CV_8UC3);
+		a.Compare = (a.o == Orientation::H) ? cv::Mat::zeros(check, mainCompareResolution, CV_8UC3) : cv::Mat::zeros(mainCompareResolution, check, CV_8UC3);
 		a.Compare.setTo(cv::Scalar(50, 50, 50));
 
 		int coordinate = 0;
@@ -140,16 +214,16 @@ void ImageEditor::resizeImages(Img& imgs)
 
 std::pair<int, int> ImageEditor::calculateNewSize(int first, int second)
 {
-	long double p = (long double)first / ImageEditor::mainCompareResolution;
+	long double p = ImageEditor::mainCompareResolution / (long double)first;
 
 	return { ImageEditor::mainCompareResolution, (int)(second * p) };
 }
 
-void ImageEditor::writeTextToCompare(std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>> &images, int space, cv::Mat &colage)
+void ImageEditor::writeTextToCompare(std::vector<std::pair<cv::Mat, std::string>> &images, int space, cv::Mat &colage)
 {
 	for (auto const& a : images) {
 		cv::putText(colage,
-			a.second.second,
+			a.second,
 			cv::Point(0, 0),
 			cv::FONT_HERSHEY_DUPLEX,
 			1.0,

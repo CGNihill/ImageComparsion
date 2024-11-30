@@ -18,7 +18,7 @@ public:
 	ImageEditor(ImageEditor const&) = delete;
 	
 
-	static void loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::pair<std::string, std::string> namings);
+	static void loadImagesSingleCollage(std::vector<fs::path> imagesPath, std::vector<std::string> namings);
 	static std::vector<int> getPossibleCompareResolution();
 	static void setCompareResolution(int resolution);
 	static void startCompareGeneration();
@@ -26,7 +26,7 @@ public:
 
 private:
 	struct Img {
-		std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>> images; // Images and naming in Compare
+		std::vector<std::pair<cv::Mat, std::string>> images; // Images and naming in Compare
 		cv::Mat Compare;
 		Orientation o = Orientation::H;
 	};
@@ -37,5 +37,5 @@ private:
 	static Orientation getImageOrinetation(cv::Mat&);
 	static void resizeImages(Img&);
 	static std::pair<int, int> calculateNewSize(int, int);
-	static void writeTextToCompare(std::vector<std::pair<cv::Mat, std::pair<std::string, std::string>>>&, int, cv::Mat&);
+	static void writeTextToCompare(std::vector<std::pair<cv::Mat, std::string>>&, int, cv::Mat&);
 };

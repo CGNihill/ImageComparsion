@@ -165,9 +165,42 @@ void UserIOMain::mainProcess() {
 	} while (!passed);
 	cout << "start collage creation" << endl;
 	auto data = app.sortImagesAndNamings(path, Ptemplate, collageTemplate);
+	auto& images = data.first;
+	// vector - vector - vector - path
+	
+	// !!! TODO - check for the same number of images for the collage
 
-	for (size_t i = 0; i < data.first.size(); i++) {
+	size_t o = 0, ls = 0;
+	for (size_t i = 0; i < images.size();) {
+		vector<fs::path> icm;
+		vector<string> icn;
+		for (size_t j = 0; j < images[i].size(); j++) {
+			icm.push_back(images[i][j][o]);
+			icn.push_back(data.second[i][j].second);
+			ls = images[i][j].size();
+		}
+		ImageEditor::loadImagesSingleCollage(icm, icn);
+		o++;
+		if (o == ls) {
+			i++;
+			o = 0;
+		}
+	}
+
+	auto res = ImageEditor::getPossibleCompareResolution();
+	cout << "- Possible compare resolutions" << endl;
+	for (auto const& r : res)
+		cout << "_" << r << endl;
+	int nres;
+	cin >> nres;
+	ImageEditor::setCompareResolution(nres);
+	ImageEditor::startCompareGeneration();
+	ImageEditor::uploadColages("C:\\Users\\snipe\\Desktop\\test", "Compare");
+
+	/*for (size_t i = 0; i < data.first.size(); i++) {
 		for (size_t j = 0; j < data.first[i].size(); j++) {
+
+
 			ImageEditor::loadImagesSingleCollage(data.first[i][j], data.second[i][j]);
 			auto res = ImageEditor::getPossibleCompareResolution();
 			cout << "- Set main resolution - (curent):" << endl;
@@ -187,8 +220,8 @@ void UserIOMain::mainProcess() {
 
 			ImageEditor::uploadColages(ops, "ons");
 		}
-	}
-	
+	}*/
+
 }
 
 pair<string, string> UserIOMain::createNewTemplate() {
@@ -297,7 +330,7 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 			else if (s[i] == '}' && c.size() > 0) {
 				c.pop_back();
 			}
-			else if (s[i] == '}' && c.size() == 0){
+			else if (s[i] == '}' && c.size() == 0) {
 				cout << "- Sintaxis erro\n-\tTry again" << endl;
 				b = true;
 				break;
@@ -308,7 +341,7 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 
 		b = true;
 		for (auto const& v : app.getNamings()) {
-			if (v.first == s && ss == v.second){
+			if (v.first == s && ss == v.second) {
 				b = false;
 				break;
 			}
