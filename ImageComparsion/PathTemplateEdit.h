@@ -20,4 +20,5 @@ private:
 
 public:
 	static std::vector < std::vector<std::vector<fs::path>>> getSortedImageList(std::string, std::string, std::vector<std::string>, UD&);
+	static void clear();
 };

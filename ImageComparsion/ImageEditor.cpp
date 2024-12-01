@@ -23,9 +23,9 @@ void ImageEditor::loadImagesSingleCollage(std::vector<fs::path> imagesPath, std:
 
 	for (size_t i = 0; i < imagesPath.size(); i++) {
 		img.images.push_back(std::make_pair(cv::imread(imagesPath[i].string()), namings[i]));
-		
+
 		size_t ims = (img.images.size() - 1);
-		
+
 		if (img.images[ims].first.empty()) {
 			std::string log = "Failed to load image: " + imagesPath[i].string();
 			LOG(true, log);
@@ -150,18 +150,18 @@ void ImageEditor::startCompareGeneration()
 			s += (a.o == Orientation::H) ? ic.first.rows : ic.first.cols;
 		}
 
-		s += (int)(s * 0.1); // add 10%
-		int space = (s * 0.1) / a.images.size();
+		s += (int)(s * 0.05); // add 10%
+		int space = (s * 0.05) / a.images.size();
 		int check = space * a.images.size();
 		for (auto const& ic : a.images) {
 			check += (a.o == Orientation::H) ? ic.first.rows : ic.first.cols;
 		}
-	/*	if (s != check) {
-			std::cout << s << " " << check << std::endl;
-			exit(0);
-		}*/
+		/*	if (s != check) {
+				std::cout << s << " " << check << std::endl;
+				exit(0);
+			}*/
 
-		//a.Compare = (a.o == Orientation::H) ? cv::Mat(check, mainCompareResolution, CV_8UC3) : cv::Mat(mainCompareResolution, check, CV_8UC3);
+			//a.Compare = (a.o == Orientation::H) ? cv::Mat(check, mainCompareResolution, CV_8UC3) : cv::Mat(mainCompareResolution, check, CV_8UC3);
 		a.Compare = (a.o == Orientation::H) ? cv::Mat::zeros(check, mainCompareResolution, CV_8UC3) : cv::Mat::zeros(mainCompareResolution, check, CV_8UC3);
 		a.Compare.setTo(cv::Scalar(50, 50, 50));
 
@@ -177,7 +177,7 @@ void ImageEditor::startCompareGeneration()
 			}
 		}
 
-		writeTextToCompare(a.images, s, a.Compare);
+		writeTextToCompare(a, s);
 	}
 }
 
@@ -185,11 +185,21 @@ void ImageEditor::uploadColages(fs::path outPath, std::string outputName)
 {
 	int i = 0;
 	for (auto const& ic : images) {
-		cv::imwrite(outPath.string() + "/" + outputName + std::to_string(i) + ".png", ic.Compare);
-		cv::Exception e;
-		cv::error(e);
-		std::cerr << e.what() << std::endl;
+		try
+		{
+			i++;
+			cv::imwrite(outPath.string() + "/" + outputName + std::to_string(i) + ".png", ic.Compare);
+		}
+		catch (const cv::Exception& e)
+		{
+			std::cerr << e.what() << std::endl << e.code << std::endl << e.err << std::endl << e.file << std::endl << e.func << std::endl << e.line << std::endl << e.msg << std::endl;
+		}
 	}
+}
+
+void ImageEditor::clear()
+{
+	images.clear();
 }
 
 ImageEditor::Orientation ImageEditor::getImageOrinetation(cv::Mat& im)
@@ -219,15 +229,18 @@ std::pair<int, int> ImageEditor::calculateNewSize(int first, int second)
 	return { ImageEditor::mainCompareResolution, (int)(second * p) };
 }
 
-void ImageEditor::writeTextToCompare(std::vector<std::pair<cv::Mat, std::string>> &images, int space, cv::Mat &colage)
+void ImageEditor::writeTextToCompare(Img& imgs, int space)
 {
-	for (auto const& a : images) {
-		cv::putText(colage,
+	int s = 0;
+	for (auto const& a : imgs.images) {
+		s += (imgs.o == Orientation::H) ? a.first.rows : a.first.cols;
+
+		cv::putText(imgs.Compare,
 			a.second,
-			cv::Point(0, 0),
+			cv::Point(0, s),
 			cv::FONT_HERSHEY_DUPLEX,
 			1.0,
 			CV_RGB(255, 0, 0),
-			2);
+			1);
 	}
 }

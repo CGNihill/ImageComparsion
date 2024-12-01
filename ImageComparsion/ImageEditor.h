@@ -23,6 +23,7 @@ public:
 	static void setCompareResolution(int resolution);
 	static void startCompareGeneration();
 	static void uploadColages(fs::path outPath, std::string outputName);
+	static void clear();
 
 private:
 	struct Img {
@@ -37,5 +38,5 @@ private:
 	static Orientation getImageOrinetation(cv::Mat&);
 	static void resizeImages(Img&);
 	static std::pair<int, int> calculateNewSize(int, int);
-	static void writeTextToCompare(std::vector<std::pair<cv::Mat, std::string>>&, int, cv::Mat&);
+	static void writeTextToCompare(Img&, int);
 };

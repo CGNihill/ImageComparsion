@@ -93,7 +93,7 @@ std::pair<std::vector<std::vector<std::vector<fs::path>>>, std::vector<std::vect
 	for (size_t i = 0; i < sortedPaths.size(); i++) {
 		namings.push_back(UserData.getNamingsByTemplate(combinationTemplates[i]));
 	}
-
+	PathTemplateEdit::clear();
 	return {sortedPaths, namings};
 }
 

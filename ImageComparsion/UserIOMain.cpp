@@ -196,6 +196,9 @@ void UserIOMain::mainProcess() {
 	ImageEditor::setCompareResolution(nres);
 	ImageEditor::startCompareGeneration();
 	ImageEditor::uploadColages("C:\\Users\\snipe\\Desktop\\test", "Compare");
+	ImageEditor::clear();
+
+	
 
 	/*for (size_t i = 0; i < data.first.size(); i++) {
 		for (size_t j = 0; j < data.first[i].size(); j++) {

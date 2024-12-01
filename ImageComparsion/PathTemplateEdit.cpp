@@ -83,3 +83,8 @@ std::vector<std::vector<std::vector<fs::path>>> PathTemplateEdit::getSortedImage
 	return tf;
 }
 
+void PathTemplateEdit::clear()
+{
+	cName.clear();
+}
+
