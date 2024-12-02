@@ -177,7 +177,7 @@ void ImageEditor::startCompareGeneration()
 			}
 		}
 
-		writeTextToCompare(a, s);
+		writeTextToCompare(a, space);
 	}
 }
 
@@ -234,16 +234,25 @@ std::pair<int, int> ImageEditor::calculateNewSize(int first, int second)
 
 void ImageEditor::writeTextToCompare(Img& imgs, int space)
 {
+	int nsp = space * 0.6;
+	int nnsp = space * 0.2;
+	std::cout << space << '\t' << nsp << std::endl;
+
 	int s = 0;
 	for (auto const& a : imgs.images) {
 		s += (imgs.o == Orientation::H) ? a.first.rows : a.first.cols;
+		s += nnsp + nsp;
+		
+		double size = (double(1) / 22) * nsp;
 
 		cv::putText(imgs.Compare,
 			a.second,
-			cv::Point(0, s),
+			cv::Point(nnsp, s),
 			cv::FONT_HERSHEY_DUPLEX,
-			1.0,
-			CV_RGB(255, 0, 0),
-			1);
+			size,
+			CV_RGB(255, 255, 255),
+			(2 * size));
+
+		s += nnsp;
 	}
 }
