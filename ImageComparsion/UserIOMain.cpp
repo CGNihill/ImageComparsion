@@ -29,7 +29,7 @@ void UserIOMain::mainProcess() {
 	bool passed = true;
 	do
 	{
-		cin >> ws;
+		cin.ignore();
 		getline(cin, path);
 
 		if (isN(path) && stoull(path) < 0 && stoull(path) > mainPaths.size() + 1) {
@@ -72,8 +72,8 @@ void UserIOMain::mainProcess() {
 	do
 	{
 		size_t choise;
-		cin.clear();
 		cin >> choise;
+		cin.ignore();
 
 		if (!(choise <= pathT.size() + 3)) {
 			passed = false;
@@ -106,8 +106,8 @@ void UserIOMain::mainProcess() {
 		}
 		else if (choise == 3) {
 			cout << "- Select the template number or set another number to cancel" << endl;
-			cin.clear();
 			cin >> choise;
+			cin.ignore();
 			if (choise < pathT.size() + 2 && choise > 2) {
 				pathT.erase(pathT.begin() + (choise - 3));
 				passed = false;
@@ -131,8 +131,8 @@ void UserIOMain::mainProcess() {
 	do {
 		cout << "- Set : ";
 		size_t c;
-		cin.clear();
 		cin >> c;
+		cin.ignore();
 
 		if (!(c < (combinations.size() + 1) || c > 0)) {
 			passed = false;
@@ -159,6 +159,7 @@ void UserIOMain::mainProcess() {
 			cout << "- Add one more template? [y/n]" << endl;
 			char ch;
 			cin >> ch;
+			cin.ignore();
 			if (tolower(ch) == 'y')
 				passed = 0;
 		}
@@ -193,9 +194,17 @@ void UserIOMain::mainProcess() {
 		cout << "_" << r << endl;
 	int nres;
 	cin >> nres;
+	cin.ignore();
+
+	string outPath, outName;
+	cout << "- Set output dir" << endl;
+	getline(cin, outPath);
+	cout << "- Set output name" << endl;
+	getline(cin, outName);
+
 	ImageEditor::setCompareResolution(nres);
 	ImageEditor::startCompareGeneration();
-	ImageEditor::uploadColages("C:\\Users\\snipe\\Desktop\\test", "Compare");
+	ImageEditor::uploadColages(outPath, outName);
 	ImageEditor::clear();
 
 	
@@ -233,7 +242,7 @@ pair<string, string> UserIOMain::createNewTemplate() {
 		<< "- Where @S is non constant value" << endl;
 
 	string pathTemplate = "";
-	cin >> ws;
+	cin.ignore();
 	getline(cin, pathTemplate);
 
 	cout << "- Now set a new name for template" << endl;
@@ -248,6 +257,7 @@ pair<string, string> UserIOMain::createNewTemplate() {
 		cout << "- 1) Continue\n- 2) Cancel\n- 3) Reset" << endl;
 		short i;
 		cin >> i;
+		cin.ignore();
 		if (i == 1) {
 			break;
 		}
@@ -269,8 +279,8 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 	pair<string, string> out;
 
 	cout << "- Set collage template name" << endl;
-	cin.clear();
 	cin >> out.first;
+	cin.ignore();
 
 	cout << "- Now you need to set the combination of the images by the naming index\n"
 		<< "- For example\n- Names -> 1) @S_Lumen_Day | 2) @S_Lumen_Night | 3) @S_PT_Day | 4) @S_PT_Night ..."
@@ -283,8 +293,8 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 
 	cout << "\n- Set the combination" << endl;
 
-	cin >> ws;
 	cin >> out.second;
+	cin.ignore();
 
 	return out;
 }
@@ -316,11 +326,11 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 
 		string s, ss;
 		cout << "- Set the file name" << endl;
-		cin.clear();
 		cin >> s;
+		cin.ignore();
 		cout << "- Set the Collage Name" << endl;
-		cin.clear();
 		cin >> ss;
+		cin.ignore();
 
 		if (s == "q" || ss == "q")
 			break;
@@ -364,8 +374,8 @@ void UserIOMain::checkTemplate(vector<pair<string, string>>& PTemp, pair<string,
 		if (t.second == newT.second && transform(tn.begin(), tn.end(), tn.begin(), [](unsigned char c) { return tolower(c); }) != transform(ntn.begin(), ntn.end(), ntn.begin(), [](unsigned char c) { return tolower(c); })) {
 			cout << "- This template already exist by name \"" << t.first << "\"\n- Rename template [Y/N]" << endl;
 			char a;
-			cin.clear();
 			cin >> a;
+			cin.ignore();
 			if (tolower(a) == 'y') {
 				t.first = newT.first;
 				return;
@@ -388,8 +398,8 @@ void UserIOMain::settings() {
 
 		unsigned short i;
 
-		cin.clear();
 		cin >> i;
+		cin.ignore();
 
 		switch (i)
 		{

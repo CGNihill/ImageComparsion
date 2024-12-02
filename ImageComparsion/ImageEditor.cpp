@@ -188,7 +188,10 @@ void ImageEditor::uploadColages(fs::path outPath, std::string outputName)
 		try
 		{
 			i++;
-			cv::imwrite(outPath.string() + "/" + outputName + std::to_string(i) + ".png", ic.Compare);
+			bool p = cv::imwrite(outPath.string() + "/" + outputName + std::to_string(i) + ".png", ic.Compare);
+			if (!p) {
+				LOG(false, "Failed to load Compare");
+			}
 		}
 		catch (const cv::Exception& e)
 		{
