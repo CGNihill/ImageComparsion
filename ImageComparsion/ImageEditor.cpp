@@ -163,7 +163,7 @@ void ImageEditor::startCompareGeneration()
 
 			//a.Compare = (a.o == Orientation::H) ? cv::Mat(check, mainCompareResolution, CV_8UC3) : cv::Mat(mainCompareResolution, check, CV_8UC3);
 		a.Compare = (a.o == Orientation::H) ? cv::Mat::zeros(check, mainCompareResolution, CV_8UC3) : cv::Mat::zeros(mainCompareResolution, check, CV_8UC3);
-		a.Compare.setTo(cv::Scalar(50, 50, 50));
+		a.Compare.setTo(cv::Scalar(22, 22, 22));
 
 		int coordinate = 0;
 		for (auto const& ic : a.images) {

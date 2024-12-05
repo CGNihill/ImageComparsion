@@ -60,11 +60,11 @@ void UserIOMain::mainProcess() {
 
 	// set path template
 	cout << "- Set path template :" << endl;
-	cout << "- 1) NO\n- 2) Create new Template\n- 3) Delete Template" << endl;
+	cout << "- 1) NO\n- 2) Create new Template" << endl;
 
 	vector<pair<string, string>> pathT = this->app.getPathTemplates();
 	for (size_t i = 0; i < pathT.size(); i++) {
-		cout << "- " << i + 4 << ")\t" << pathT[i].first << " | " << pathT[i].second << endl;
+		cout << "- " << i + 3 << ")\t" << pathT[i].first << " | " << pathT[i].second << endl;
 	}
 
 	passed = false;
@@ -104,17 +104,8 @@ void UserIOMain::mainProcess() {
 			}
 
 		}
-		else if (choise == 3) {
-			cout << "- Select the template number or set another number to cancel" << endl;
-			cin >> choise;
-			cin.ignore();
-			if (choise < pathT.size() + 2 && choise > 2) {
-				pathT.erase(pathT.begin() + (choise - 3));
-				passed = false;
-			}
-		}
 		else {
-			Ptemplate = pathT[choise - 4].second;
+			Ptemplate = pathT[choise - 3].second;
 		}
 
 	} while (!passed);
@@ -168,7 +159,7 @@ void UserIOMain::mainProcess() {
 	auto data = app.sortImagesAndNamings(path, Ptemplate, collageTemplate);
 	auto& images = data.first;
 	// vector - vector - vector - path
-	
+
 	// !!! TODO - check for the same number of images for the collage
 
 	size_t o = 0, ls = 0;
@@ -207,7 +198,7 @@ void UserIOMain::mainProcess() {
 	ImageEditor::uploadColages(outPath, outName);
 	ImageEditor::clear();
 
-	
+
 
 	/*for (size_t i = 0; i < data.first.size(); i++) {
 		for (size_t j = 0; j < data.first[i].size(); j++) {
@@ -237,6 +228,7 @@ void UserIOMain::mainProcess() {
 }
 
 pair<string, string> UserIOMain::createNewTemplate() {
+	cout << "Write [q] for exit" << endl;
 	cout << "- For creating a new template u need to set the local path starting from main path, for example:\n"
 		<< "- --- main path: C:\\\\User\\Local Name\\project --- local path \\ saves\\screenshot\\@S\\...\n"
 		<< "- Where @S is non constant value" << endl;
@@ -245,12 +237,20 @@ pair<string, string> UserIOMain::createNewTemplate() {
 	cin.ignore();
 	getline(cin, pathTemplate);
 
+	if (pathTemplate == "q") {
+		return {};
+	}
+
 	cout << "- Now set a new name for template" << endl;
 
 	string pathTemplateName = "";
 
 	cin.clear();
 	getline(cin, pathTemplateName);
+
+	if (pathTemplateName == "q") {
+		return {};
+	}
 
 	while (1) {
 		cout << "- Template : " << pathTemplateName << '|' << pathTemplate << endl;
@@ -277,16 +277,22 @@ pair<string, string> UserIOMain::createNewTemplate() {
 }
 pair<string, string> UserIOMain::createNewCollageTemplate() {
 	pair<string, string> out;
+	cout << "Write [q] for exit" << endl;
+
 
 	cout << "- Set collage template name" << endl;
 	cin >> out.first;
 	cin.ignore();
 
+	if (out.first == "q") {
+		return {};
+	}
+
 	cout << "- Now you need to set the combination of the images by the naming index\n"
 		<< "- For example\n- Names -> 1) @S_Lumen_Day | 2) @S_Lumen_Night | 3) @S_PT_Day | 4) @S_PT_Night ..."
-		<< "\n- Template -> 1.3 | 2.4 | 1.2 | 2.3 | ...\n" << endl;
+		<< "\n- Template -> 1.3 | 2.4 | 1.2 | 2.3 | ...\n" << endl << endl;
 
-	cout << "- Current naming list (for changing the naming list or other UserData go to settings)" << endl;
+	cout << "- Current naming list (for changing the naming list or other UserData go to settings)" << endl << endl;
 	for (size_t i = 0; i < this->app.getNamings().size(); i++) {
 		cout << "- " << i << ") " << this->app.getNamings()[i].first << " | " << this->app.getNamings()[i].second << endl;
 	}
@@ -296,13 +302,17 @@ pair<string, string> UserIOMain::createNewCollageTemplate() {
 	cin >> out.second;
 	cin.ignore();
 
+	if (out.second == "q") {
+		return {};
+	}
+
 	return out;
 }
 string UserIOMain::addNewMainPath()
 {
 	string p;
 	cout << "- Set new main path" << endl;
-	cin.clear();
+	cin.ignore();
 	getline(cin, p);
 	if (!app.checkPath(p)) {
 		cout << "- Path does not exist" << endl;
@@ -319,16 +329,16 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 	while (1) {
 		cout << "- Write [q] for exit from this function" << endl;
 
-		cout << "- If you want to add a new name u need to know some thinks about syntaxis\n"
+		/*cout << "- If you want to add a new name u need to know some thinks about syntaxis\n"
 			<< "- 1) You will set 2 thinks\n-\tFirst is the naming of the photos in explorer\n-\tFor the second you will set the name of refered photo in the final collage\n"
 			<< "- 2) If u will set a single name, for example (lumen | LUMEN) this application will search \'lumen\' in all the file name\n"
-			<< "- 3) You can use some variables, for example ({1}_lumen_{2} | {2}_LUMEN_{1}), in this case if the file will have a name like Camera1_lumen_Day, the otput name will be Day_LUMEN_Camera1 or DAY_LUMEN_CAMERA1" << endl;
+			<< "- 3) You can use some variables, for example ({1}_lumen_{2} | {2}_LUMEN_{1}), in this case if the file will have a name like Camera1_lumen_Day, the otput name will be Day_LUMEN_Camera1 or DAY_LUMEN_CAMERA1" << endl;*/
 
 		string s, ss;
-		cout << "- Set the file name" << endl;
+		cout << "- Set the file name patern" << endl;
 		cin >> s;
 		cin.ignore();
-		cout << "- Set the Collage Name" << endl;
+		cout << "- Set the Name in Collage" << endl;
 		cin >> ss;
 		cin.ignore();
 
@@ -401,6 +411,7 @@ void UserIOMain::settings() {
 		cin >> i;
 		cin.ignore();
 
+		system("cls");
 		switch (i)
 		{
 		case 0:
@@ -413,24 +424,37 @@ void UserIOMain::settings() {
 		}break;
 		case 2: {
 			vector<pair<string, string>> p = app.getPathTemplates();
-			p.push_back(createNewTemplate());
-			app.setPathTemplates(p);
+			pair<string, string> v = createNewTemplate();
+
+			if (!v.first.empty()) {
+				p.push_back(v);
+				app.setCombinationList(p);
+			}
 		}break;
 		case 3: {
 			vector<pair<string, string>> p = app.getNamings();
 			vector<pair<string, string>> v = addNewNamings();
-			p.insert(p.end(), v.begin(), v.end());
-			app.setNamings(p);
+			cout << v.size() << endl;
+			if (v.size() != 0) {
+				p.insert(p.end(), v.begin(), v.end());
+				app.setNamings(p);
+			}
 		}break;
 		case 4: {
 			vector<pair<string, string>> p = app.getCombinationList();
-			p.push_back(createNewCollageTemplate());
-			app.setCombinationList(p);
+			pair<string, string> v = createNewCollageTemplate();
+
+			if (!v.first.empty()) {
+				p.push_back(v);
+				app.setCombinationList(p);
+			}
 		}break;
 		default:
 			cout << "- There is no such answer\n- Try again" << endl;
 			break;
 		}
+
+		//system("cls");
 
 		app.updateUserData();
 	}
