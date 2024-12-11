@@ -339,7 +339,7 @@ vector<pair<string, string>> UserIOMain::addNewNamings()
 		cin >> s;
 		cin.ignore();
 		cout << "- Set the Name in Collage" << endl;
-		cin >> ss;
+		getline(cin, ss);
 		cin.ignore();
 
 		if (s == "q" || ss == "q")
