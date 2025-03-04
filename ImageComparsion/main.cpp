@@ -44,7 +44,7 @@ int main() {
 	}
 	catch (const std::exception& e)
 	{
-		cout << e.what() << endl;
+		LOG(true, e.what());
 	}
 	return 0;
 }

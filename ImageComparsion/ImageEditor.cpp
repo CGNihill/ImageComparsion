@@ -256,3 +256,8 @@ void ImageEditor::writeTextToCompare(Img& imgs, int space)
 		s += nnsp;
 	}
 }
+
+void ImageEditor::makeColorCompare() {}
+
+void ImageEditor::makeExposureCompare() {}
+

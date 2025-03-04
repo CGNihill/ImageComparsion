@@ -23,6 +23,8 @@ public:
 	static void setCompareResolution(int resolution);
 	static void startCompareGeneration();
 	static void uploadColages(fs::path outPath, std::string outputName);
+	static void makeColorCompare();
+	static void makeExposureCompare();
 	static void clear();
 
 private:

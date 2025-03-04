@@ -22,6 +22,7 @@ public:
 	UserIOMain(UserIOMain&&) = delete;
 	UserIOMain(UserIOMain const &) = delete;
 
+	void fastMode();
 	void mainProcess();
 	void settings();
 	// main process

@@ -4,9 +4,13 @@
 #include <string>
 #include <stdexcept>
 
+#include "outLog.hpp"
+
 inline void myerr(bool ex, std::string what, std::string file, size_t line, std::string func) {
 	std::string e = file + '\t' + func + '\t' + std::to_string(line) + "\n\t" + what;
 	std::cerr << e << std::endl;
+
+	OutLog::log(e);
 	if (ex)
 		exit(0);
 }
